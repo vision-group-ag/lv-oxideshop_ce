@@ -1,18 +1,15 @@
-parameters:
-  logger_path: OxidEsales\EshopCommunity\Internal\Logger
-
 services:
   OxidEsales\EshopCommunity\Internal\Logger\Validator\LoggerConfigurationValidatorInterface:
-    class: %logger_path%\Validator\PsrLoggerConfigurationValidator
+    class: OxidEsales\EshopCommunity\Internal\Logger\Validator\PsrLoggerConfigurationValidator
     public: false
   OxidEsales\EshopCommunity\Internal\Logger\Validator\Configuration\MonologConfigurationInterface:
-    class: %logger_path%\Configuration\MonologConfiguration
+    class: OxidEsales\EshopCommunity\Internal\Logger\Configuration\MonologConfiguration
     arguments:
       $loggerName: 'OXID Logger'
       $context: '@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface'
     public: false
   OxidEsales\EshopCommunity\Internal\Logger\Validator\LoggerFactoryInterface:
-    class: %logger_path%\Factory\MonologLoggerFactory
+    class: OxidEsales\EshopCommunity\Internal\Logger\Factory\MonologLoggerFactory
     autowire: true
     public: false
   Monolog\Logger:
@@ -20,7 +17,7 @@ services:
     factory: 'OxidEsales\EshopCommunity\Internal\Logger\Validator\LoggerFactoryInterface:create'
     public: false
   Psr\Log\LoggerInterface:
-    class: %logger_path%\Wrapper\LoggerWrapper
+    class: OxidEsales\EshopCommunity\Internal\Logger\Wrapper\LoggerWrapper
     arguments:
       $logger: '@Monolog\Logger'
     public: true
