@@ -9,7 +9,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
 use oxDb;
 use OxidEsales\Eshop\Application\Model\Order;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use oxOrder;
+use PHPUnit\Framework\MockObject\MockObject;
 
 require_once __DIR__ . '/BasketConstruct.php';
 
@@ -35,8 +36,6 @@ class OrderNumberingTest extends BaseTestCase
     {
         parent::setUp();
         oxDb::getDb()->execute('DELETE FROM `oxuser` WHERE oxusername = \'admin\'');
-
-        ContainerFactory::resetContainer();
     }
 
     /**

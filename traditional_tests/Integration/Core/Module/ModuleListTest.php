@@ -28,9 +28,16 @@ use OxidEsales\Eshop\Application\Model\Basket;
  */
 class ModuleListTest extends UnitTestCase
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
     public function setup(): void
     {
-        $this->getContainer()
+        $this->container = ContainerFactory::getInstance()->getContainer();
+
+        $this->container
             ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
 
@@ -41,9 +48,11 @@ class ModuleListTest extends UnitTestCase
     {
         parent::tearDown();
 
-        $this->getContainer()
+        $this->container
             ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
+
+        Registry::getConfig()->saveShopConfVar('aarr', 'activeModules', []);
     }
 
     public function testGetDisabledModuleClasses(): void
@@ -80,7 +89,7 @@ class ModuleListTest extends UnitTestCase
 
         $moduleList->cleanup();
 
-        $moduleActivationBridge = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
+        $moduleActivationBridge = $this->container->get(ModuleActivationBridgeInterface::class);
 
         $this->assertFalse(
             $moduleActivationBridge->isActive('with_metadata_v21', 1)
@@ -141,17 +150,12 @@ class ModuleListTest extends UnitTestCase
     {
         $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $id);
 
-        $this->getContainer()->get(ModuleInstallerInterface::class)
+        $this->container->get(ModuleInstallerInterface::class)
             ->install($package);
     }
 
     private function activateModule(string $id): void
     {
-        $this->getContainer()->get(ModuleActivationBridgeInterface::class)->activate($id, 1);
-    }
-
-    private function getContainer(): ContainerInterface
-    {
-        return ContainerFactory::getInstance()->getContainer();
+        $this->container->get(ModuleActivationBridgeInterface::class)->activate($id, 1);
     }
 }

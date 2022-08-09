@@ -24,6 +24,7 @@ class SimpleVariantTest extends \OxidTestCase
     protected function tearDown(): void
     {
         $this->cleanUpTable('oxdiscount');
+        oxTestModules::cleanAllModules();
         oxRegistry::get("oxDiscountList")->forceReload();
         $this->cleanUpTable('oxarticles');
 

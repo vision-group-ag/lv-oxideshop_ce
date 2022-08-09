@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-use OxidEsales\Eshop\Application\Controller\ContentController as EshopContentController;
-use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
@@ -16,10 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
-use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\ContentController as ModuleContentController;
-use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingArticle;
-use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingContentController;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass as namespaced_from_ns;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\own_namespace_extending_unified_namespace\MyClass as own_namespace_extending_unified_namespace;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance24\MyClass as ModuleInheritance24MyClass;
@@ -189,56 +185,6 @@ class ModuleInheritanceTest extends UnitTestCase
         $this->activateModules($modulesToActivate);
 
         $this->assertClassInheritance($extensionClass, $classToExtend);
-    }
-
-    /**
-     * This test covers loading chain of a classes which are extended by another class with native php "extends".
-     *
-     * @dataProvider dataProviderTestNativeExtensionOfChainExtendingClass
-     */
-    public function testNativeExtensionOfChainExtendingClass(
-        array $moduleToActivate,
-        string $extensionClass,
-        string $classToExtend
-    ): void
-    {
-        $this->installModules($moduleToActivate);
-        $this->activateModules($moduleToActivate);
-
-        $this->assertClassInheritance($extensionClass, [$classToExtend]);
-    }
-
-    public function dataProviderTestNativeExtensionOfChainExtendingClass(): array
-    {
-        $modules = ['module_chain_extension_3_1', 'module_native_extension'];
-
-        return [
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => ModuleContentController::class,
-                'classToExtend' => EshopContentController::class,
-            ],
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingContentController::class,
-                'classToExtend' => ModuleContentController::class,
-            ],
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\Article::class,
-                'classToExtend' => Article::class,
-            ],
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingArticle::class,
-                'classToExtend' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_native_extension\Article::class,
-            ],
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingArticle::class,
-                'classToExtend' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\module_chain_extension_3_1\vendor_1_module_3_1_myclass::class,
-            ]
-        ];
     }
 
     private function installModules(array $modulesToActivate)

@@ -26,18 +26,6 @@ $aModule = array(
             'name' => 'stringSetting',
             'type' => 'str',
             'value' => 'row'
-        ],
-        [
-            'group' => 'someGroup',
-            'name' => 'testInt',
-            'type' => 'num',
-            'value' => 0
-        ],
-        [
-            'group' => 'someGroup',
-            'name' => 'testFloat',
-            'type' => 'num',
-            'value' => 0
         ]
     ],
     'events'      => [
