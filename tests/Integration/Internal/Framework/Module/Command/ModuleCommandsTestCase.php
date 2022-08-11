@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\ConsoleTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Application;
 use Webmozart\PathUtil\Path;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @internal
  */
-class ModuleCommandsTestCase extends TestCase
+class ModuleCommandsTestCase extends IntegrationTestCase
 {
     use ConsoleTrait;
 
@@ -29,7 +29,7 @@ class ModuleCommandsTestCase extends TestCase
 
     protected $moduleId = 'testmodule';
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->cleanupTestData();
         parent::tearDown();
