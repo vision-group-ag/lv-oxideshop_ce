@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
 - `oxid_esales.command.apply_modules_configuration_command` service
 - `ApplyModulesConfigurationCommand` moved to another repository
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
+- `oxid_esales.command.apply_modules_configuration_command` service
+- `ApplyModulesConfigurationCommand` moved to another repository
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapper`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface`
