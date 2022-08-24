@@ -88,12 +88,28 @@ final class ModuleConfigurationTest extends UnitTestCase
             'newValue',
             $this->getModuleConfiguration()->getModuleSetting('stringSetting')->getValue()
         );
+    }
 
-        Registry::getConfig()->reinitialize();
+    public function testSaveConfVarsSavesNumAsInteger(): void
+    {
+        $this->installTestModule();
+        $this->activateTestModule();
+
+        $_POST['oxid'] = $this->testModuleId;
+        $_POST['confstrs'] = ['testInt' => '321', 'testFloat' => '123.321'];
+
+        $moduleConfigurationController = oxNew(ModuleConfigurationController::class);
+        $moduleConfigurationController->saveConfVars();
+
+        ContainerFactory::resetContainer();
 
         $this->assertSame(
-            'newValue',
-            Registry::getConfig()->getConfigParam('stringSetting')
+            321,
+            $this->getModuleConfiguration()->getModuleSetting('testInt')->getValue()
+        );
+        $this->assertSame(
+            123.321,
+            $this->getModuleConfiguration()->getModuleSetting('testFloat')->getValue()
         );
     }
 

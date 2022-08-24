@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Psr\Container\ContainerInterface;
 
 /**
  * Base class for module integration tests.
@@ -22,30 +22,29 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCase
 {
     /**
-     * @var ContainerBuilder
-     */
-    protected $container;
-
-    /**
      * Ensure a clean environment before each test
      */
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->container = ContainerFactory::getInstance()->getContainer();
+        $this->getContainer()->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
 
         $environment = new Environment();
         $environment->clean();
     }
 
+    protected function getContainer(): ContainerInterface
+    {
+        return ContainerFactory::getInstance()->getContainer();
+    }
+
     protected function installAndActivateModule(string $moduleId, int $shopId = 1): void
     {
-        $installService = $this->container->get(ModuleInstallerInterface::class);
+        $installService = $this->getContainer()->get(ModuleInstallerInterface::class);
         $package = new OxidEshopPackage(__DIR__ . '/TestData/modules/' . $moduleId);
         $installService->install($package);
 
-        $activationService = $this->container->get(ModuleActivationBridgeInterface::class);
+        $activationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
         $activationService->activate($moduleId, $shopId);
     }
 
@@ -64,7 +63,7 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
             $moduleId = $module->getId();
         }
 
-        $activationService = $this->container->get(ModuleActivationBridgeInterface::class);
+        $activationService = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
 
         $activationService->deactivate($moduleId, $shopId);
     }
@@ -82,22 +81,6 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
 
         if (isset($expectedResult['blocks'])) {
             $this->assertTrue($validator->checkBlocks($expectedResult['blocks']), 'Blocks do not match expectations');
-        }
-
-        if (isset($expectedResult['extend'])) {
-            $this->assertEquals(
-                $expectedResult['extend'],
-                $config->getConfigParam('aModules'),
-                'Extensions do not match expectations'
-            );
-        }
-
-        if (isset($expectedResult['controllers'])) {
-            $this->assertTrue($validator->checkControllers($expectedResult['controllers']), 'Controllers do not match expectations');
-        }
-
-        if (isset($expectedResult['settings'])) {
-            $this->assertTrue($validator->checkConfigAmount($expectedResult['settings']), 'Configs do not match expectations');
         }
 
         if (isset($expectedResult['settings_values'])) {
