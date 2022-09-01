@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\Manufacturer;
 use OxidEsales\Eshop\Core\Base;
 use OxidEsales\Eshop\Core\Registry;
 
@@ -99,21 +100,17 @@ class PictureHandler extends Base
 
     /**
      * Deletes master picture and all images generated from it.
-     * If third parameter is false, skips master image delete, only
-     * all generated images will be deleted.
      *
      * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oObject               manufacturer object
      * @param int                                              $iIndex                master picture index
-     * @param bool                                             $blDeleteMasterPicture delete master picture, default is true
      *
      * @return null
      */
-    public function deleteManufacturerMasterPicture($oObject, $iIndex, $blDeleteMasterPicture = true)
+    public function deleteManufacturerMasterPicture(Manufacturer $oObject, int $iIndex)
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $myUtilsPic = \OxidEsales\Eshop\Core\Registry::getUtilsPic();
         $oUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
-        $blGeneratedImagesOnly = !$blDeleteMasterPicture;
 
         $sAbsDynImageDir = $myConfig->getPictureDir(false);
         $sMasterImage = basename($oObject->{"oxmanufacturers__oxpic" . $iIndex}->value);
@@ -123,28 +120,16 @@ class PictureHandler extends Base
 
         $aPic = [
             "sField"    => "oxpic" . $iIndex,
-            "sDir"      => $oUtilsFile->getImageDirByType("MPIC" . $iIndex, $blGeneratedImagesOnly),
+            "sDir"      => $oUtilsFile->getImageDirByType("MPIC" . $iIndex),
             "sFileName" => $sMasterImage
         ];
 
-        $blDeleted = $myUtilsPic->safePictureDelete(
+        $myUtilsPic->safePictureDelete(
             $aPic["sFileName"],
             $sAbsDynImageDir . $aPic["sDir"],
             "oxmanufacturers",
             $aPic["sField"]
         );
-
-        if ($blDeleted) {
-            $aDelPics = [];
-
-            foreach ($aDelPics as $aPic) {
-                $myUtilsPic->safePictureDelete(
-                    $aPic["sFileName"],
-                    $sAbsDynImageDir . $aPic["sDir"],
-                    "oxmanufacturers",
-                    $aPic["sField"]);
-            }
-        }
     }
 
     /**

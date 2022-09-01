@@ -130,8 +130,6 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     {
         parent::assign($dbRecord);
 
-        $this->assignDynImageDir();
-
         // manufacturer article count is stored in cache
         if ($this->_blShowArticleCnt && !$this->isAdmin()) {
             $this->_iNrOfArticles = \OxidEsales\Eshop\Core\Registry::getUtilsCount()->getManufacturerArticleCount($this->getId());
@@ -212,21 +210,6 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
         }
 
         return $this->_aSeoUrls[$iLang];
-    }
-
-    /**
-     * assigns dynimagedir to article
-     */
-    protected function assignDynImageDir()
-    {
-        $myConfig = Registry::getConfig();
-
-        $sThisShop = $this->oxarticles__oxshopid->value;
-
-        $this->_sDynImageDir = $myConfig->getPictureUrl(null, false);
-        $this->dabsimagedir = $myConfig->getPictureDir(false); //$sThisShop
-        $this->nossl_dimagedir = $myConfig->getPictureUrl(null, false, false, null, $sThisShop); //$sThisShop
-        $this->ssl_dimagedir = $myConfig->getPictureUrl(null, false, true, null, $sThisShop); //$sThisShop
     }
 
     /**
@@ -458,9 +441,10 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      * @param int $index index from 1 to 3
      * @return string|null
      */
-    public function getImgIdentByIndex(int $index): string
+    public function getImgIdentByIndex(int $index): ?string
     {
-        return isset($this->picturesIdens[$index]) ? $this->picturesIdens[$index] : null;
+        //check this again
+        return $this->picturesIdens[$index] ?? null;
     }
 
     /**

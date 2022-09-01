@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Manufacturer;
+use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -27,7 +29,7 @@ class ManufacturerPictures extends \OxidEsales\Eshop\Application\Controller\Admi
     {
         parent::render();
 
-        $this->_aViewData["edit"] = $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
+        $this->_aViewData["edit"] = $oManufacturer = oxNew(Manufacturer::class);
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
@@ -62,7 +64,7 @@ class ManufacturerPictures extends \OxidEsales\Eshop\Application\Controller\Admi
 
         if ($myConfig->isDemoShop()) {
             // disabling uploading pictures if this is demo shop
-            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
+            $oEx = oxNew(ExceptionToDisplay::class);
             $oEx->setMessage('MANUFACTURER_PICTURES_UPLOADISDISABLED');
             Registry::getUtilsView()->addErrorToDisplay($oEx, false);
 
@@ -71,14 +73,14 @@ class ManufacturerPictures extends \OxidEsales\Eshop\Application\Controller\Admi
 
         parent::save();
 
-        $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
+        $oManufacturer = oxNew(Manufacturer::class);
         if ($oManufacturer->load($this->getEditObjectId())) {
             $oManufacturer->assign(Registry::getRequest()->getRequestEscapedParameter("editval"));
             Registry::getUtilsFile()->processFiles($oManufacturer);
 
             // Show that no new image added
             if (Registry::getUtilsFile()->getNewFilesCounter() == 0) {
-                $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
+                $oEx = oxNew(ExceptionToDisplay::class);
                 $oEx->setMessage('NO_PICTURES_CHANGES');
                 Registry::getUtilsView()->addErrorToDisplay($oEx, false);
             }
@@ -90,7 +92,6 @@ class ManufacturerPictures extends \OxidEsales\Eshop\Application\Controller\Admi
     /**
      * Deletes selected master picture and all other master pictures
      * where master picture index is higher than currently deleted index.
-     * Also deletes custom icon and thumbnail.
      *
      * @return null
      */
@@ -100,7 +101,7 @@ class ManufacturerPictures extends \OxidEsales\Eshop\Application\Controller\Admi
 
         if ($myConfig->isDemoShop()) {
             // disabling uploading pictures if this is demo shop
-            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
+            $oEx = oxNew(ExceptionToDisplay::class);
             $oEx->setMessage('MANUFACTURER_PICTURES_UPLOADISDISABLED');
             Registry::getUtilsView()->addErrorToDisplay($oEx, false);
 
@@ -110,52 +111,43 @@ class ManufacturerPictures extends \OxidEsales\Eshop\Application\Controller\Admi
         $sOxId = $this->getEditObjectId();
         $iIndex = Registry::getRequest()->getRequestEscapedParameter("masterPicIndex");
 
-        $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
+        $oManufacturer = oxNew(Manufacturer::class);
         $oManufacturer->load($sOxId);
 
         $iIndex = (int) $iIndex;
         if ($iIndex > 0) {
             // deleting master picture
-            $this->resetMasterPicture($oManufacturer, $iIndex, true);
+            $this->resetMasterPicture($oManufacturer, $iIndex);
         }
 
         $oManufacturer->save();
     }
 
     /**
-     * Deletes selected master picture and all pictures generated
-     * from master picture
+     * Deletes selected master picture
      *
-     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer       Manufacturer object
-     * @param int                                         $iIndex         master picture index
-     * @param bool                                        $blDeleteMaster if TRUE - deletes and unsets master image file
+     * @param Manufacturer $oManufacturer       Manufacturer object
+     * @param int $iIndex                       master picture index
      */
-    protected function resetMasterPicture($oManufacturer, $iIndex, $blDeleteMaster = false)
+    protected function resetMasterPicture(Manufacturer $oManufacturer, int $iIndex)
     {
         if ($this->canResetMasterPicture($oManufacturer, $iIndex)) {
             if (!$oManufacturer->isDerived()) {
                 $oPicHandler = Registry::getPictureHandler();
-                $oPicHandler->deleteManufacturerMasterPicture($oManufacturer, $iIndex, $blDeleteMaster);
+                $oPicHandler->deleteManufacturerMasterPicture($oManufacturer, $iIndex);
             }
 
-            if ($blDeleteMaster) {
-                //reseting master picture field
-                $oManufacturer->{"oxmanufacturers__oxpic" . $iIndex} = new \OxidEsales\Eshop\Core\Field();
-            }
-
-            // cleaning oxzoom fields
-            if (isset($oManufacturer->{"oxmanufacturers__oxzoom" . $iIndex})) {
-                $oManufacturer->{"oxmanufacturers__oxzoom" . $iIndex} = new \OxidEsales\Eshop\Core\Field();
-            }
+            //reseting master picture field
+            $oManufacturer->{"oxmanufacturers__oxpic" . $iIndex} = new \OxidEsales\Eshop\Core\Field();
         }
     }
 
     /**
      * Method is used for overloading to update Manufacturer object.
      *
-     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer
+     * @param Manufacturer $oManufacturer
      *
-     * @return \OxidEsales\Eshop\Application\Model\Manufacturer
+     * @return Manufacturer
      */
     protected function updateManufacturer($oManufacturer)
     {
@@ -165,8 +157,8 @@ class ManufacturerPictures extends \OxidEsales\Eshop\Application\Controller\Admi
     /**
      * Checks if possible to reset master picture.
      *
-     * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer
-     * @param int                                         $masterPictureIndex
+     * @param Manufacturer $oManufacturer
+     * @param int $masterPictureIndex
      *
      * @return bool
      */
