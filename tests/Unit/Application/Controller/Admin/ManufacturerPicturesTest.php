@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ManufacturerPictures;
 use OxidEsales\EshopCommunity\Application\Model\Manufacturer;
-use OxidEsales\EshopCommunity\Core\Config;
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
 use OxidEsales\EshopCommunity\Core\Field;
 use OxidEsales\EshopCommunity\Core\Registry;
@@ -115,7 +115,7 @@ class ManufacturerPicturesTest extends \OxidTestCase
     public function testSave_demoShopMode()
     {
         $oConfig = $this->getMockBuilder(Config::class)->onlyMethods(["isDemoShop"] )->getMock();
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(true);
 
         Registry::getSession()->deleteVariable("Errors");
 
@@ -137,7 +137,7 @@ class ManufacturerPicturesTest extends \OxidTestCase
     public function testDeletePicture_demoShopMode()
     {
         $oConfig = $this->getMockBuilder(Config::class)->onlyMethods(["isDemoShop"] )->getMock();
-        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
+        $oConfig->expects($this->once())->method('isDemoShop')->willReturn(true);
 
         Registry::getSession()->deleteVariable("Errors");
 
