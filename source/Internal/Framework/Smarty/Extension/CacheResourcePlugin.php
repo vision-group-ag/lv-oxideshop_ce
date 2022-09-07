@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
-class CacheResourcePlugin
+class CacheResourcePlugin implements ResourcePluginInterface
 {
     /**
      * @var SmartyContextInterface
@@ -34,7 +34,7 @@ class CacheResourcePlugin
      *
      * @return bool
      */
-    public static function getTemplate($templateName, &$templateSource, $smarty)
+    public static function getTemplate($templateName, &$templateSource, $smarty): bool
     {
         if (isset($smarty->oxidcache) && isset($smarty->oxidcache->value)) {
             $templateSource = $smarty->oxidcache->value;
@@ -58,7 +58,7 @@ class CacheResourcePlugin
      *
      * @return bool
      */
-    public static function getTimestamp($templateName, &$templateTimestamp, $smarty)
+    public static function getTimestamp($templateName, &$templateTimestamp, $smarty): bool
     {
         $templateTimestamp = $smarty->oxidtimecache->value ?? time();
 
@@ -75,7 +75,7 @@ class CacheResourcePlugin
      *
      * @return bool
      */
-    public static function getSecure($templateName, $smarty)
+    public static function getSecure($templateName, $smarty): bool
     {
         return true;
     }
@@ -88,7 +88,7 @@ class CacheResourcePlugin
      * @param string $templateName The name of template
      * @param object $smarty       The smarty object
      */
-    public static function getTrusted($templateName, $smarty)
+    public static function getTrusted($templateName, $smarty): void
     {
     }
 }

@@ -318,16 +318,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->left_delimiter = '[{';
         $smarty->right_delimiter = '}]';
 
-        $smarty->register_resource(
-            'ox',
-            [
-                'ox_get_template',
-                'ox_get_timestamp',
-                'ox_get_secure',
-                'ox_get_trusted'
-            ]
-        );
-
         $smartyDir = $this->getSmartyDir();
 
         $smarty->caching = false;
@@ -335,7 +325,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->cache_dir = $smartyDir;
         $smarty->template_dir = $this->getTemplateDirs();
         $smarty->compile_id = $this->getTemplateCompileId();
-        $smarty->default_template_handler_func = [Registry::getUtilsView(), '_smartyDefaultTemplateHandler'];
 
         $smarty->plugins_dir = array_merge(
             $this->getSmartyPluginDirectories(),
