@@ -424,33 +424,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * is called when a template cannot be obtained from its resource.
-     *
-     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
-     *
-     * @param string $resourceType      template type
-     * @param string $resourceName      template file name
-     * @param string $resourceContent   template file content
-     * @param int    $resourceTimestamp template file timestamp
-     * @param object $smarty            template processor object (smarty)
-     *
-     * @return bool
-     */
-    public function _smartyDefaultTemplateHandler($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $config = Registry::getConfig();
-        if ($resourceType == 'file' && !is_readable($resourceName)) {
-            $resourceName = $config->getTemplatePath($resourceName, $config->isAdmin());
-            $resourceContent = $smarty->_read_file($resourceName);
-            $resourceTimestamp = filemtime($resourceName);
-
-            return is_file($resourceName) && is_readable($resourceName);
-        }
-
-        return false;
-    }
-
-    /**
      * Template blocks getter: retrieve sorted blocks for overriding in templates
      *
      * @param string $templateFileName filename of rendered template

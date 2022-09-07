@@ -16,16 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
  *
  * called when Smarty's file: resource is unable to load a requested file
  */
-class SmartyDefaultTemplateHandler
+class SmartyDefaultTemplateHandler implements SmartyTemplateHandlerInterface
 {
-    /**
-     * @var SmartyContextInterface
-     */
-    private static $context;
-
-    public function __construct(SmartyContextInterface $context)
+    public function __construct(private SmartyContextInterface $context)
     {
-        self::$context = $context;
     }
 
     /**
@@ -39,20 +33,27 @@ class SmartyDefaultTemplateHandler
      *
      * @return bool
      */
-    public function handleTemplate($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty)
+    public function handleTemplate($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty): bool
     {
-        $context = self::$context;
+        $fileLoaded = false;
         if ($resourceType === 'file' && !is_readable($resourceName)) {
-            $resourceName = $context->getTemplatePath($resourceName);
-            $fileLoaded = is_file($resourceName) && is_readable($resourceName);
+            $resourceName = $this->context->getTemplatePath($resourceName);
+            $fileLoaded = $this->isFileLoadable($resourceName);
             if ($fileLoaded) {
                 $resourceContent = $smarty->_read_file($resourceName);
                 $resourceTimestamp = filemtime($resourceName);
             }
-
-            return $fileLoaded;
         }
+        return $fileLoaded;
+    }
 
-        return false;
+    /**
+     * @param string $resourceName
+     *
+     * @return bool
+     */
+    private function isFileLoadable(string $resourceName): bool
+    {
+        return is_file($resourceName) && is_readable($resourceName);
     }
 }

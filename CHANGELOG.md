@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Methods:
   - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
+  - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
 
 ## [7.0.0-rc.2] - 2022-08-15
 
