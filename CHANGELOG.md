@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Core\Field`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
+  - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
 
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`

@@ -87,10 +87,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      */
     private function getRenderer()
     {
-        $bridge = $this->getContainer()->get(TemplateRendererBridgeInterface::class);
-        $bridge->setEngine($this->getSmarty());
-
-        return $bridge->getTemplateRenderer();
+        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
     }
 
     /**
@@ -237,49 +234,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             "ox:{$oxid}{$activeLanguageId}",
             $context
         );
-    }
-
-    /**
-     * Runs long description through smarty. If you pass array of data
-     * to process, array will be returned, if you pass string - string
-     * will be passed as result
-     *
-     * @deprecated since v6.4 (2019-10-10); Use getRenderedContent()
-     *
-     * @param mixed                                            $sDesc       description or array of descriptions
-     *                                                                      (array( [] => array(_ident_, _value_to_process_)))
-     * @param string                                           $sOxid       current object id
-     * @param \OxidEsales\Eshop\Core\Controller\BaseController $oActView    view data to use its view data (optional)
-     * @param bool                                             $blRecompile force to recompile if found in cache
-     *
-     * @return mixed
-     */
-    public function parseThroughSmarty($sDesc, $sOxid = null, $oActView = null, $blRecompile = false)
-    {
-        startProfile("parseThroughSmarty");
-
-        if (!is_array($sDesc) && strpos($sDesc, "[{") === false) {
-            stopProfile("parseThroughSmarty");
-
-            return $sDesc;
-        }
-
-        if (!$oActView) {
-            $oActView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
-            $oActView->addGlobalParams();
-        }
-
-        if (is_array($sDesc)) {
-            foreach ($sDesc as $name => $aData) {
-                $result[$name] = $this->getRenderedContent($aData[1], $oActView->getViewData(), $sOxid);
-            }
-        } else {
-            $result = $this->getRenderedContent($sDesc, $oActView->getViewData(), $sOxid);
-        }
-
-        stopProfile("parseThroughSmarty");
-
-        return $result;
     }
 
     /**
