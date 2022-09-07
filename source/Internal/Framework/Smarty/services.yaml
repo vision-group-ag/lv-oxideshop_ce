@@ -37,3 +37,5 @@ services:
     public: true
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\SmartyTemplateHandlerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\SmartyDefaultTemplateHandler
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\ResourcePluginInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\CacheResourcePlugin

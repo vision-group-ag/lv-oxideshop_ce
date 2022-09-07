@@ -30,6 +30,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `convertToPseudoHtml()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
+  - `oxfunctions:ox_get_template()`
+  - `oxfunctions:ox_get_timestamp()`
+  - `oxfunctions:ox_get_secure()`
+  - `oxfunctions:ox_get_trusted()`
 
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
