@@ -504,20 +504,18 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Returns content parsed through smarty
+     * Returns content parsed through renderer
      *
      * @return string
      */
     public function getParsedContent()
     {
-        /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
-        $oUtilsView = Registry::getUtilsView();
-        return $oUtilsView->parseThroughSmarty(
+        $activeView = oxNew(FrontendController::class);
+        $activeView->addGlobalParams();
+        return Registry::getUtilsView()->getRenderedContent(
             $this->getContent()->oxcontents__oxcontent->value,
-            $this->getContent()->getId(),
-            null,
-            true
-        );
+            $activeView->getViewData(),
+            $this->getContent()->getId());
     }
 
     /**

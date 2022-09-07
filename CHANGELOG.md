@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
 
+### Removed
+
+- Methods:
+  - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
+
 ## [7.0.0-rc.2] - 2022-08-15
 
 ### Added
