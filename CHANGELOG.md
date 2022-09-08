@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:getSmartyPluginDirectories()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:getShopSmartyPluginDirectories()`
+  - `OxidEsales\EshopCommunity\Core\UtilsView:_fillCommonSmartyProperties()`
   - `oxfunctions:ox_get_template()`
   - `oxfunctions:ox_get_timestamp()`
   - `oxfunctions:ox_get_secure()`
