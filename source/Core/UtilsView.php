@@ -73,7 +73,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         if (!self::$_oSmarty || $blReload) {
             $this->_aTemplateDir = [];
             self::$_oSmarty = new Smarty();
-            $this->_smartyCompileCheck(self::$_oSmarty);
         }
 
         return self::$_oSmarty;
@@ -289,23 +288,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         }
 
         return $smartyDir;
-    }
-
-    /**
-     * Sets compile check property to smarty object.
-     *
-     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
-     *
-     * @param object $smarty template processor object (smarty)
-     */
-    protected function _smartyCompileCheck($smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $config = Registry::getConfig();
-        $smarty->compile_check = $config->getConfigParam('blCheckTemplates');
-        if ($config->isProductiveMode()) {
-            // override in any case
-            $smarty->compile_check = false;
-        }
     }
 
     /**
