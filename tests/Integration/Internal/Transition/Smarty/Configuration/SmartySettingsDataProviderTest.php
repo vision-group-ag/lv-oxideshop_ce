@@ -70,10 +70,6 @@ class SmartySettingsDataProviderTest extends TestCase
             ->method('getTemplateCompileId')
             ->willReturn('7f96e0d92070fd4733296e5118fd5a01');
 
-        $smartyContextMock
-            ->method('getSmartyPluginDirectories')
-            ->willReturn(['testModuleDir', 'testShopPath/Core/Smarty/Plugin']);
-
         return $smartyContextMock;
     }
 }

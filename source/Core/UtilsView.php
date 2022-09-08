@@ -316,11 +316,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->cache_dir = $smartyDir;
         $smarty->template_dir = $this->getTemplateDirs();
 
-        $smarty->plugins_dir = array_merge(
-            $this->getSmartyPluginDirectories(),
-            $smarty->plugins_dir
-        );
-
         $coreDirectory = Registry::getConfig()->getConfigParam('sCoreDir');
 
         include_once $coreDirectory . 'Smarty/Plugin/prefilter.oxblock.php';
@@ -354,35 +349,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             $smarty->security_settings['ALLOW_CONSTANTS'] = true;
             $smarty->secure_dir = $smarty->template_dir;
         }
-    }
-
-    /**
-     * Returns all Smarty plugins including defined in modules
-     *
-     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
-     *
-     * @return array
-     */
-    public function getSmartyPluginDirectories()
-    {
-        return array_merge(
-            $this->getModuleSmartyPluginDirectories(),
-            $this->getShopSmartyPluginDirectories()
-        );
-    }
-
-    /**
-     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
-     *
-     * @return array
-     */
-    protected function getShopSmartyPluginDirectories()
-    {
-        $coreDirectory = Registry::getConfig()->getConfigParam('sCoreDir');
-
-        return [
-            $coreDirectory . 'Smarty/Plugin',
-        ];
     }
 
     /**
@@ -721,55 +687,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     private function prepareBlockKey($activeBlockTemplate)
     {
         return $activeBlockTemplate['OXTEMPLATE'] . $activeBlockTemplate['OXBLOCKNAME'];
-    }
-
-    /**
-     * @return array
-     */
-    private function getModuleSmartyPluginDirectories()
-    {
-        $moduleSmartyPluginDirectoryRepository = $this->getSmartyPluginDirectoryRepository();
-        $moduleSmartyPluginDirectories = $moduleSmartyPluginDirectoryRepository->get();
-
-        return $moduleSmartyPluginDirectories->getWithFullPath();
-    }
-
-    /**
-     * @return ModuleSmartyPluginDirectoryRepository
-     */
-    private function getSmartyPluginDirectoryRepository()
-    {
-        $subShopSpecificCache = oxNew(
-            \OxidEsales\Eshop\Core\SubShopSpecificFileCache::class,
-            $this->getShopIdCalculator()
-        );
-
-        $moduleVariablesLocator = oxNew(
-            ModuleVariablesLocator::class,
-            $subShopSpecificCache,
-            $this->getShopIdCalculator()
-        );
-
-        return oxNew(
-            ModuleSmartyPluginDirectoryRepository::class,
-            $moduleVariablesLocator
-        );
-    }
-
-    /**
-     * @return EshopShopIdCalculator
-     */
-    private function getShopIdCalculator()
-    {
-        if (is_null($this->shopIdCalculator)) {
-            $moduleVariablesCache = oxNew(\OxidEsales\Eshop\Core\FileCache::class);
-
-            $this->shopIdCalculator = oxNew(
-                EshopShopIdCalculator::class,
-                $moduleVariablesCache
-            );
-        }
-        return $this->shopIdCalculator;
     }
 
     private function skipSmartyRender(): bool

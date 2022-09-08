@@ -89,14 +89,6 @@ class SmartyContext implements SmartyContextInterface
     }
 
     /**
-     * @return array
-     */
-    public function getSmartyPluginDirectories(): array
-    {
-        return $this->utilsView->getSmartyPluginDirectories();
-    }
-
-    /**
      * @return int
      */
     public function getTemplatePhpHandlingMode(): int

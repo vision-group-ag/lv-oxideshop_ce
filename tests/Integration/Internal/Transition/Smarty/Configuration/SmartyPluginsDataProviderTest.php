@@ -7,21 +7,20 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Smarty\Configuration;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty\Configuration;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPluginsDataProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPluginsDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class SmartyPluginsDataProviderTest extends \PHPUnit\Framework\TestCase
+class SmartyPluginsDataProviderTest extends IntegrationTestCase
 {
-    public function testGetConfigurationWithSecuritySettingsOff()
+    public function testGetPlugins()
     {
-        $contextMock = $this->getContextMock();
+        $this->markTestIncomplete('First refactor module plugin functionality');
+        $dataProvider = $this->get(SmartyPluginsDataProviderInterface::class);
 
-        $dataProvider = new SmartyPluginsDataProvider($contextMock);
-
-        $settings = ['testShopPath/Core/Smarty/Plugin'];
+        $settings = ['testModuleDir', 'testShopPath/Core/Smarty/Plugin'];
 
         $this->assertEquals($settings, $dataProvider->getPlugins());
     }

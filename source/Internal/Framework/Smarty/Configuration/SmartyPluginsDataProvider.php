@@ -9,19 +9,26 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 class SmartyPluginsDataProvider implements SmartyPluginsDataProviderInterface
 {
-    public function __construct(private SmartyContextInterface $context)
+    public function __construct(private BasicContextInterface $context)
     {
     }
 
-    /**
-     * @return array
-     */
     public function getPlugins(): array
     {
-        return $this->context->getSmartyPluginDirectories();
+        return [$this->getShopSmartyPluginDirectory()];
+    }
+
+    private function getShopSmartyPluginDirectory(): string
+    {
+        return $this->getEditionsRootPaths() . DIRECTORY_SEPARATOR . 'Core/Smarty/Plugin';
+    }
+
+    private function getEditionsRootPaths(): string
+    {
+        return $this->context->getCommunityEditionSourcePath();
     }
 }
