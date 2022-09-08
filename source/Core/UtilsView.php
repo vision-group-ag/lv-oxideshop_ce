@@ -270,19 +270,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get template compile id.
-     *
-     * @return string
-     */
-    public function getTemplateCompileId()
-    {
-        $shopId = Registry::getConfig()->getShopId();
-        $templateDirectories = $this->getTemplateDirs();
-
-        return md5(reset($templateDirectories) . '__' . $shopId);
-    }
-
-    /**
      * Returns a full path to Smarty compile dir
      *
      * @return string
@@ -324,7 +311,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $smarty->compile_dir = $smartyDir;
         $smarty->cache_dir = $smartyDir;
         $smarty->template_dir = $this->getTemplateDirs();
-        $smarty->compile_id = $this->getTemplateCompileId();
 
         $smarty->plugins_dir = array_merge(
             $this->getSmartyPluginDirectories(),

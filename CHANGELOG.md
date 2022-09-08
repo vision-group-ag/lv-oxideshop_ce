@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 - Methods:
+  - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateCompileId()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
   - `oxfunctions:ox_get_template()`

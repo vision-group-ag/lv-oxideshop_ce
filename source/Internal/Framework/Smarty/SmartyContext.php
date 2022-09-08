@@ -69,7 +69,10 @@ class SmartyContext implements SmartyContextInterface
      */
     public function getTemplateCompileId(): string
     {
-        return $this->utilsView->getTemplateCompileId();
+        $shopId = $this->basicContext->getCurrentShopId();
+        $templateDirectories = $this->getTemplateDirectories();
+
+        return md5(reset($templateDirectories) . '__' . $shopId);
     }
 
     /**

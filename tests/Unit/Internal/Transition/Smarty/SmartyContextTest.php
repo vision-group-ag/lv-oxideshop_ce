@@ -13,10 +13,12 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use PHPUnit\Framework\TestCase;
 
-class SmartyContextTest extends \PHPUnit\Framework\TestCase
+class SmartyContextTest extends TestCase
 {
-    public function getTemplateEngineDebugModeDataProvider()
+    public function getTemplateEngineDebugModeDataProvider(): array
     {
         return [
             [1, true],
@@ -29,12 +31,9 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param mixed $configValue
-     * @param bool  $debugMode
-     *
      * @dataProvider getTemplateEngineDebugModeDataProvider
      */
-    public function testGetTemplateEngineDebugMode($configValue, $debugMode)
+    public function testGetTemplateEngineDebugMode(mixed $configValue, bool $debugMode): void
     {
         $config = $this->getConfigMock();
         $config->method('getConfigParam')
@@ -47,7 +46,7 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($debugMode, $smartyContext->getTemplateEngineDebugMode());
     }
 
-    public function showTemplateNamesDataProvider()
+    public function showTemplateNamesDataProvider(): array
     {
         return [
             [8, false, true],
@@ -58,13 +57,9 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param mixed $configValue
-     * @param bool  $adminMode
-     * @param bool  $result
-     *
      * @dataProvider showTemplateNamesDataProvider
      */
-    public function testShowTemplateNames($configValue, $adminMode, $result)
+    public function testShowTemplateNames(int $configValue, bool $adminMode, bool $result): void
     {
         $config = $this->getConfigMock();
         $config->method('getConfigParam')
@@ -79,7 +74,7 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($result, $smartyContext->showTemplateNames());
     }
 
-    public function testGetTemplateSecurityMode()
+    public function testGetTemplateSecurityMode(): void
     {
         $config = $this->getConfigMock();
         $config->method('isDemoShop')
@@ -91,7 +86,7 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(true, $smartyContext->getTemplateSecurityMode());
     }
 
-    public function testGetTemplateCompileCheckMode()
+    public function testGetTemplateCompileCheckMode(): void
     {
         $config = $this->getConfigMock();
         $config->method('getConfigParam')
@@ -104,7 +99,7 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(true, $smartyContext->getTemplateCompileCheckMode());
     }
 
-    public function testGetTemplateCompileCheckModeInProductiveMode()
+    public function testGetTemplateCompileCheckModeInProductiveMode(): void
     {
         $config = $this->getConfigMock();
         $config->method('getConfigParam')
@@ -119,7 +114,7 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($smartyContext->getTemplateCompileCheckMode());
     }
 
-    public function testGetTemplatePhpHandlingMode()
+    public function testGetTemplatePhpHandlingMode(): void
     {
         $config = $this->getConfigMock();
         $config->method('getConfigParam')
@@ -132,7 +127,7 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(1, $smartyContext->getTemplatePhpHandlingMode());
     }
 
-    public function testGetSmartyPluginDirectories()
+    public function testGetSmartyPluginDirectories(): void
     {
         $config = $this->getConfigMock();
 
@@ -144,7 +139,7 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(['CoreDir/Smarty/Plugin'], $smartyContext->getSmartyPluginDirectories());
     }
 
-    public function testGetTemplatePath()
+    public function testGetTemplatePath(): void
     {
         $config = $this->getConfigMock();
         $config->method('isAdmin')
@@ -159,7 +154,7 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('templatePath', $smartyContext->getTemplatePath('testTemplate'));
     }
 
-    public function testGetTemplateCompileDirectory()
+    public function testGetTemplateCompileDirectory(): void
     {
         $config = $this->getConfigMock();
         $utilsView = $this->getUtilsViewMock();
@@ -170,7 +165,7 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('testCompileDir', $smartyContext->getTemplateCompileDirectory());
     }
 
-    public function testGetTemplateDirectories()
+    public function testGetTemplateDirectories(): void
     {
         $config = $this->getConfigMock();
         $utilsView = $this->getUtilsViewMock();
@@ -181,18 +176,22 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(['testTemplateDir'], $smartyContext->getTemplateDirectories());
     }
 
-    public function testGetTemplateCompileId()
+    public function testGetTemplateCompileId(): void
     {
+        $templateDirectories = ['testCompileDir'];
+        $shopId = 1;
+        $context = new ContextStub();
+        $context->setCurrentShopId($shopId);
         $config = $this->getConfigMock();
         $utilsView = $this->getUtilsViewMock();
-        $utilsView->method('getTemplateCompileId')
-            ->will($this->returnValue('testCompileId'));
+        $utilsView->method('getTemplateDirs')
+            ->will($this->returnValue($templateDirectories));
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
-        $this->assertSame('testCompileId', $smartyContext->getTemplateCompileId());
+        $smartyContext = new SmartyContext($context, $config, $utilsView);
+        $this->assertSame(md5(reset($templateDirectories) . '__' . $shopId), $smartyContext->getTemplateCompileId());
     }
 
-    public function testGetSourcePath()
+    public function testGetSourcePath(): void
     {
         $config = $this->getConfigMock();
         $utilsView = $this->getUtilsViewMock();
