@@ -32,4 +32,6 @@ interface TemplateLoaderInterface
      * @return string
      */
     public function getContext($name): string;
+
+    public function findTemplate($name): string;
 }

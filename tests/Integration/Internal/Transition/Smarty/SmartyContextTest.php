@@ -7,12 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Smarty;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 
@@ -42,7 +41,7 @@ class SmartyContextTest extends TestCase
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame($debugMode, $smartyContext->getTemplateEngineDebugMode());
     }
 
@@ -70,7 +69,7 @@ class SmartyContextTest extends TestCase
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame($result, $smartyContext->showTemplateNames());
     }
 
@@ -82,7 +81,7 @@ class SmartyContextTest extends TestCase
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame(true, $smartyContext->getTemplateSecurityMode());
     }
 
@@ -95,7 +94,7 @@ class SmartyContextTest extends TestCase
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame(true, $smartyContext->getTemplateCompileCheckMode());
     }
 
@@ -110,7 +109,7 @@ class SmartyContextTest extends TestCase
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertFalse($smartyContext->getTemplateCompileCheckMode());
     }
 
@@ -123,7 +122,7 @@ class SmartyContextTest extends TestCase
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame(1, $smartyContext->getTemplatePhpHandlingMode());
     }
 
@@ -138,7 +137,7 @@ class SmartyContextTest extends TestCase
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame('templatePath', $smartyContext->getTemplatePath('testTemplate'));
     }
 
@@ -149,7 +148,7 @@ class SmartyContextTest extends TestCase
         $utilsView->method('getSmartyDir')
         ->will($this->returnValue('testCompileDir'));
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame('testCompileDir', $smartyContext->getTemplateCompileDirectory());
     }
 
@@ -160,7 +159,7 @@ class SmartyContextTest extends TestCase
         $utilsView->method('getTemplateDirs')
             ->will($this->returnValue(['testTemplateDir']));
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame(['testTemplateDir'], $smartyContext->getTemplateDirectories());
     }
 
@@ -183,7 +182,7 @@ class SmartyContextTest extends TestCase
     {
         $config = $this->getConfigMock();
         $utilsView = $this->getUtilsViewMock();
-        $basicContext = new BasicContextStub();
+        $basicContext = new ContextStub();
         $basicContext->setSourcePath('testSourcePath');
 
         $smartyContext = new SmartyContext($basicContext, $config, $utilsView);

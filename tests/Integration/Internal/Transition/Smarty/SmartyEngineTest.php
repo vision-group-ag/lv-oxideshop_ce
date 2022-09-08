@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridge;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyEngine;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 class SmartyEngineTest extends IntegrationTestCase
@@ -94,7 +95,7 @@ class SmartyEngineTest extends IntegrationTestCase
         $smarty->compile_dir = sys_get_temp_dir();
         $smarty->left_delimiter = '[{';
         $smarty->right_delimiter = '}]';
-        return new SmartyEngine($smarty, new SmartyEngineBridge());
+        return new SmartyEngine($smarty, new SmartyEngineBridge(), $this->get(TemplateFileResolverInterface::class));
     }
 
     private function getTemplateDirectory()

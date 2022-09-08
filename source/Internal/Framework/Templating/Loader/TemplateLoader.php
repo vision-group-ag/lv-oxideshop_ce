@@ -61,7 +61,7 @@ class TemplateLoader implements TemplateLoaderInterface
      *
      * @throws TemplateFileNotFoundException
      */
-    private function findTemplate($name): string
+    public function findTemplate($name): string
     {
         $filename = $this->templateFileResolver->getFilename($name);
         $file = $this->fileLocator->locate($filename);
