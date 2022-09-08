@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\TemplateFileNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class TemplateLoaderDelegator implements TemplateLoaderInterface
@@ -52,6 +53,11 @@ class TemplateLoaderDelegator implements TemplateLoaderInterface
     public function getContext($name): string
     {
         return $this->getLoader()->getContext($name);
+    }
+
+    public function findTemplate($name): string
+    {
+        return $this->getLoader()->findTemplate($name);
     }
 
     private function getLoader(): TemplateLoaderInterface

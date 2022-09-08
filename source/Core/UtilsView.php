@@ -10,10 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
-use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
-use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
@@ -46,37 +43,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      * @var array
      */
     protected $_blIsTplBlocks = null;
-
-    /**
-     * Active module Ids array
-     *
-     * @var array
-     */
-    protected $_aActiveModuleInfo = null;
-
-    /** @var \OxidEsales\Eshop\Core\ShopIdCalculator */
-    private $shopIdCalculator;
-
-    /**
-     * returns existing or creates smarty object
-     * Returns smarty object. If object not yet initiated - creates it. Sets such
-     * default parameters, like cache lifetime, cache/templates directory, etc.
-     *
-     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
-     *
-     * @param bool $blReload set true to force smarty reload
-     *
-     * @return Smarty
-     */
-    public function getSmarty($blReload = false)
-    {
-        if (!self::$_oSmarty || $blReload) {
-            $this->_aTemplateDir = [];
-            self::$_oSmarty = new Smarty();
-        }
-
-        return self::$_oSmarty;
-    }
 
     /**
      * Templating instance getter

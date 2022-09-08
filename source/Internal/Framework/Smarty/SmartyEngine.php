@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
 class SmartyEngine implements TemplateEngineInterface, SmartyEngineInterface
@@ -23,7 +24,8 @@ class SmartyEngine implements TemplateEngineInterface, SmartyEngineInterface
 
     public function __construct(
         private \Smarty $engine,
-        private SmartyEngineBridgeInterface $bridge
+        private SmartyEngineBridgeInterface $bridge,
+        private TemplateFileResolverInterface $templateFileResolver,
     ) {
     }
 
@@ -37,13 +39,14 @@ class SmartyEngine implements TemplateEngineInterface, SmartyEngineInterface
      */
     public function render(string $name, array $context = []): string
     {
+        $templateFileName = $this->templateFileResolver->getFilename($name);
         foreach ($context as $key => $value) {
             $this->engine->assign($key, $value);
         }
         if (isset($context['oxEngineTemplateId'])) {
-            return $this->engine->fetch($name, $context['oxEngineTemplateId']);
+            return $this->engine->fetch($templateFileName, $context['oxEngineTemplateId']);
         }
-        return $this->engine->fetch($name);
+        return $this->engine->fetch($templateFileName);
     }
 
     /**

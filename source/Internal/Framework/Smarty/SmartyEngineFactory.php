@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridge;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
@@ -18,7 +19,8 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
 {
     public function __construct(
         private SmartyBuilderInterface $smartyBuilder,
-        private SmartyConfigurationInterface $smartyConfiguration
+        private SmartyConfigurationInterface $smartyConfiguration,
+        private TemplateFileResolverInterface $templateFileResolver
     ) {
     }
 
@@ -37,6 +39,6 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
 
         // TODO Event for smarty object configuration
 
-        return new SmartyEngine($smarty, new SmartyEngineBridge());
+        return new SmartyEngine($smarty, new SmartyEngineBridge(), $this->templateFileResolver);
     }
 }
