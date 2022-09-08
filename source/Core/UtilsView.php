@@ -73,7 +73,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         if (!self::$_oSmarty || $blReload) {
             $this->_aTemplateDir = [];
             self::$_oSmarty = new Smarty();
-            $this->_fillCommonSmartyProperties(self::$_oSmarty);
             $this->_smartyCompileCheck(self::$_oSmarty);
         }
 
@@ -290,61 +289,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         }
 
         return $smartyDir;
-    }
-
-    /**
-     * sets properties of smarty object
-     *
-     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
-     *
-     * @param Smarty $smarty template processor object (smarty)
-     */
-    protected function _fillCommonSmartyProperties($smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $config = Registry::getConfig();
-        $smarty->left_delimiter = '[{';
-        $smarty->right_delimiter = '}]';
-
-        $smartyDir = $this->getSmartyDir();
-
-        $smarty->caching = false;
-        $smarty->compile_dir = $smartyDir;
-        $smarty->cache_dir = $smartyDir;
-        $smarty->template_dir = $this->getTemplateDirs();
-
-        $coreDirectory = Registry::getConfig()->getConfigParam('sCoreDir');
-
-        include_once $coreDirectory . 'Smarty/Plugin/prefilter.oxblock.php';
-        $smarty->register_prefilter('smarty_prefilter_oxblock');
-
-        $debugMode = $config->getConfigParam('iDebug');
-        if ($debugMode == 1 || $debugMode == 3 || $debugMode == 4) {
-            $smarty->debugging = true;
-        }
-
-        if ($debugMode == 8 && !$config->isAdmin()) {
-            include_once $coreDirectory . 'Smarty/Plugin/prefilter.oxtpldebug.php';
-            $smarty->register_prefilter('smarty_prefilter_oxtpldebug');
-        }
-
-        //demo shop security
-        if (!$config->isDemoShop()) {
-            $smarty->php_handling = (int) $config->getConfigParam('iSmartyPhpHandling');
-            $smarty->security = false;
-        } else {
-            $smarty->php_handling = SMARTY_PHP_REMOVE;
-            $smarty->security = true;
-            $smarty->security_settings['IF_FUNCS'][] = 'XML_ELEMENT_NODE';
-            $smarty->security_settings['IF_FUNCS'][] = 'is_int';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'round';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'floor';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'trim';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'implode';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'is_array';
-            $smarty->security_settings['MODIFIER_FUNCS'][] = 'getimagesize';
-            $smarty->security_settings['ALLOW_CONSTANTS'] = true;
-            $smarty->secure_dir = $smarty->template_dir;
-        }
     }
 
     /**

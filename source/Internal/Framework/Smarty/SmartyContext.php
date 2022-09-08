@@ -11,12 +11,12 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\UtilsView;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class SmartyContext implements SmartyContextInterface
 {
     public function __construct(
-        private BasicContextInterface $basicContext,
+        private ContextInterface $context,
         private Config $config,
         private UtilsView $utilsView
     ) {
@@ -69,7 +69,7 @@ class SmartyContext implements SmartyContextInterface
      */
     public function getTemplateCompileId(): string
     {
-        $shopId = $this->basicContext->getCurrentShopId();
+        $shopId = $this->context->getCurrentShopId();
         $templateDirectories = $this->getTemplateDirectories();
 
         return md5(reset($templateDirectories) . '__' . $shopId);
@@ -111,7 +111,7 @@ class SmartyContext implements SmartyContextInterface
      */
     public function getSourcePath(): string
     {
-        return $this->basicContext->getSourcePath();
+        return $this->context->getSourcePath();
     }
 
     /**
