@@ -10,15 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty;
 
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilder;
-use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
-use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
-use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
+class SmartyBuilderTest extends IntegrationTestCase
 {
     private $debugMode;
 
@@ -42,10 +38,11 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
      */
     public function testSmartySettingsAreSetCorrect($securityMode, $smartySettings)
     {
-        /** @var SmartyConfigurationFactory $configurationFactory */
-        $configurationFactory = $this->setupAndConfigureContainer($securityMode)
-            ->get(SmartyConfigurationFactoryInterface::class);
-        $configuration = $configurationFactory->getConfiguration();
+        $config = Registry::getConfig();
+        $config->setConfigParam('blDemoShop', $securityMode);
+        $config->setConfigParam('iDebug', 0);
+
+        $configuration = $this->get(SmartyConfigurationFactoryInterface::class)->getConfiguration();
         $smarty = (new SmartyBuilder())
             ->setSettings($configuration->getSettings())
             ->setSecuritySettings($configuration->getSecuritySettings())
@@ -74,7 +71,8 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
     private function getSmartySettingsWithSecurityOn(): array
     {
         $config = Registry::getConfig();
-        $templateDirs = Registry::getUtilsView()->getTemplateDirs();
+        $templateDirectories = Registry::getUtilsView()->getTemplateDirs();
+        $shopId = $config->getShopId();
         return [
             'security' => true,
             'php_handling' => 2,
@@ -83,8 +81,8 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
             'caching' => false,
             'compile_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
             'cache_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
-            'compile_id' => Registry::getUtilsView()->getTemplateCompileId(),
-            'template_dir' => $templateDirs,
+            'compile_id' => md5(reset($templateDirectories) . '__' . $shopId),
+            'template_dir' => $templateDirectories,
             'debugging' => false,
             'compile_check' => $config->getConfigParam('blCheckTemplates'),
             'security_settings' => [
@@ -127,7 +125,8 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
     private function getSmartySettingsWithSecurityOff(): array
     {
         $config = Registry::getConfig();
-        $templateDirs = Registry::getUtilsView()->getTemplateDirs();
+        $templateDirectories = Registry::getUtilsView()->getTemplateDirs();
+        $shopId = $config->getShopId();
         return [
             'security' => false,
             'php_handling' => $config->getConfigParam('iSmartyPhpHandling'),
@@ -136,8 +135,8 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
             'caching' => false,
             'compile_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
             'cache_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
-            'compile_id' => Registry::getUtilsView()->getTemplateCompileId(),
-            'template_dir' => $templateDirs,
+            'compile_id' => md5(reset($templateDirectories) . '__' . $shopId),
+            'template_dir' => $templateDirectories,
             'debugging' => false,
             'compile_check' => $config->getConfigParam('blCheckTemplates'),
             'plugins_dir' => $this->getSmartyPlugins(),
@@ -147,33 +146,5 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
     private function getSmartyPlugins()
     {
         return array_merge(Registry::getUtilsView()->getSmartyPluginDirectories(), ['plugins']);
-    }
-
-    private function getSmartyContext($securityMode = false): SmartyContext
-    {
-        $config = Registry::getConfig();
-        $config->setConfigParam('blDemoShop', $securityMode);
-        $config->setConfigParam('iDebug', 0);
-
-        return new SmartyContext(new BasicContext(), $config, Registry::getUtilsView());
-    }
-
-    /**
-     * We need to replace services in the container with a mock
-     *
-     * @param bool $securityMode
-     *
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
-     */
-    private function setupAndConfigureContainer($securityMode = false)
-    {
-        $container = (new TestContainerFactory())->create();
-
-        $container->set(SmartyContextInterface::class, $this->getSmartyContext($securityMode));
-        $container->autowire(SmartyContextInterface::class, SmartyContext::class);
-
-        $container->compile();
-
-        return $container;
     }
 }

@@ -11,10 +11,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Smarty\Config
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyResourcesDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\ResourcePluginInterface;
+use PHPUnit\Framework\TestCase;
 
-class SmartyResourcesDataProviderTest extends \PHPUnit\Framework\TestCase
+class SmartyResourcesDataProviderTest extends TestCase
 {
-    public function testGetSmartyResources()
+    public function testGetSmartyResources(): void
     {
         $pluginMock = $this->getMockBuilder(ResourcePluginInterface::class)->getMock();
         $datProvider = new SmartyResourcesDataProvider($pluginMock);

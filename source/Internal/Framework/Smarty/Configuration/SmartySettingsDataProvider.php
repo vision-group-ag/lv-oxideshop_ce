@@ -36,7 +36,7 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
             'compile_dir' => $compilePath,
             'cache_dir' => $compilePath,
             'template_dir' => $this->context->getTemplateDirectories(),
-            'compile_id' => $this->getTemplateCompileId(),
+            'compile_id' => $this->context->getTemplateCompileId(),
             'default_template_handler_func' => [$this->smartyTemplateHandler, 'handleTemplate'],
             'debugging' => $this->context->getTemplateEngineDebugMode(),
             'compile_check' => $this->context->getTemplateCompileCheckMode(),
@@ -53,15 +53,5 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
     private function getTemplateCompilePath(): string
     {
         return $this->context->getTemplateCompileDirectory();
-    }
-
-    /**
-     * Get template compile id.
-     *
-     * @return string
-     */
-    private function getTemplateCompileId(): string
-    {
-        return $this->context->getTemplateCompileId();
     }
 }
