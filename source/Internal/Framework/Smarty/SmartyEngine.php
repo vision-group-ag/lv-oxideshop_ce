@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
-class SmartyEngine implements TemplateEngineInterface
+class SmartyEngine implements TemplateEngineInterface, SmartyEngineInterface
 {
     /**
      * Array of global parameters
@@ -115,5 +115,21 @@ class SmartyEngine implements TemplateEngineInterface
     public function __get($name)
     {
         return $this->engine->$name;
+    }
+
+    /**
+     * @return \Smarty
+     */
+    public function getSmarty(): \Smarty
+    {
+        return $this->engine;
+    }
+
+    /**
+     * @param \Smarty $smarty
+     */
+    public function setSmarty(\Smarty $smarty)
+    {
+        $this->engine = $smarty;
     }
 }

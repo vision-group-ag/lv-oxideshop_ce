@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty;
 
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPluginsDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilder;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -145,6 +146,8 @@ class SmartyBuilderTest extends IntegrationTestCase
 
     private function getSmartyPlugins()
     {
-        return array_merge(Registry::getUtilsView()->getSmartyPluginDirectories(), ['plugins']);
+        /** @var SmartyPluginsDataProviderInterface $pluginProvider */
+        $pluginProvider = $this->get(SmartyPluginsDataProviderInterface::class);
+        return array_merge($pluginProvider->getPlugins(), ['plugins']);
     }
 }

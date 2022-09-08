@@ -10,6 +10,8 @@ services:
     factory: ['OxidEsales\Eshop\Core\Registry', 'getUtilsView']
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilder
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactory
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartySettingsDataProviderInterface:
@@ -28,9 +30,9 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridge
   smarty.smarty_engine_factory:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy\LegacySmartyEngineFactory
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyEngineFactory
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy\LegacySmartyEngine
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyEngine
     factory: ['@smarty.smarty_engine_factory', 'getTemplateEngine']
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyTemplateRendererBridge
@@ -39,3 +41,10 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\SmartyDefaultTemplateHandler
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\ResourcePluginInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\CacheResourcePlugin
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\ModuleSmartyPluginsDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\ModuleSmartyPluginsDataProvider
+    decorates: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPluginsDataProviderInterface
+    decoration_priority: 100
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\ModuleSmartyPluginsDataProviderInterface.inner'
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface'

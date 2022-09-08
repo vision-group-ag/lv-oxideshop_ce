@@ -17,7 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterf
 class SmartyEngineFactory implements TemplateEngineFactoryInterface
 {
     public function __construct(
-        private SmartyBuilder $smartyBuilder,
+        private SmartyBuilderInterface $smartyBuilder,
         private SmartyConfigurationInterface $smartyConfiguration
     ) {
     }

@@ -9,14 +9,21 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter;
 
+use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
+use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
 use OxidEsales\EshopCommunity\Application\Model\Shop;
 
 class ShopAdapter implements ShopAdapterInterface
 {
+    /**
+     * @var EshopShopIdCalculator
+     */
+    private $shopIdCalculator;
+
     /**
      * @param string $string
      *
@@ -116,5 +123,45 @@ class ShopAdapter implements ShopAdapterInterface
         $shopModel = oxNew(Shop::class);
         $shopModel->load($shopId);
         return $shopModel->isLoaded();
+    }
+
+    public function getModuleSmartyPluginDirectories(): array
+    {
+        $moduleSmartyPluginDirectoryRepository = $this->getSmartyPluginDirectoryRepository();
+        $moduleSmartyPluginDirectories = $moduleSmartyPluginDirectoryRepository->get();
+
+        return $moduleSmartyPluginDirectories->getWithFullPath();
+    }
+
+    private function getSmartyPluginDirectoryRepository(): ModuleSmartyPluginDirectoryRepository
+    {
+        $subShopSpecificCache = oxNew(
+            \OxidEsales\Eshop\Core\SubShopSpecificFileCache::class,
+            $this->getShopIdCalculator()
+        );
+
+        $moduleVariablesLocator = oxNew(
+            ModuleVariablesLocator::class,
+            $subShopSpecificCache,
+            $this->getShopIdCalculator()
+        );
+
+        return oxNew(
+            ModuleSmartyPluginDirectoryRepository::class,
+            $moduleVariablesLocator
+        );
+    }
+
+    private function getShopIdCalculator(): EshopShopIdCalculator
+    {
+        if (is_null($this->shopIdCalculator)) {
+            $moduleVariablesCache = oxNew(\OxidEsales\Eshop\Core\FileCache::class);
+
+            $this->shopIdCalculator = oxNew(
+                EshopShopIdCalculator::class,
+                $moduleVariablesCache
+            );
+        }
+        return $this->shopIdCalculator;
     }
 }
