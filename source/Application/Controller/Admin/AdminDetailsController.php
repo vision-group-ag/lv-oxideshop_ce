@@ -92,8 +92,8 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     protected function processEditValue($sValue)
     {
-        // A. replace ONLY if long description is not processed by smarty, or users will not be able to
-        // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
+        // A. replace ONLY if long description is not processed by template engine, or users will not be able to
+        // store tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
         // descriptions, which are filled dynamically
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
             $aReplace = ['[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]'];

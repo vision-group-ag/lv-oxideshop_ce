@@ -190,7 +190,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * get long description, parsed through smarty
+     * get long description, parsed through template engine
      *
      * @return string
      */
