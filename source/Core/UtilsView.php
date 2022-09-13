@@ -16,20 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\Templa
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use Smarty;
 use Webmozart\PathUtil\Path;
 
 class UtilsView extends \OxidEsales\Eshop\Core\Base
 {
-    /**
-     * Template processor object (smarty)
-     *
-     * @deprecated since v6.4 (2019-10-10); Will be removed
-     *
-     * @var Smarty
-     */
-    protected static $_oSmarty = null;
-
     /**
      * Templates directories array
      *
