@@ -190,24 +190,6 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * get long description, parsed through template engine
-     *
-     * @deprecated please use $this->oxactions__oxlongdesc->getRawValue() and parse it when used
-     *
-     * @return string
-     */
-    public function getLongDesc()
-    {
-        $activeView = oxNew(FrontendController::class);
-        $activeView->addGlobalParams();
-        $utilsView = Registry::getUtilsView();
-        return $utilsView->getRenderedContent(
-            $this->oxactions__oxlongdesc->getRawValue(),
-            $activeView->getViewData(),
-            $this->getId() . $this->getLanguage());
-    }
-
-    /**
      * return assigned banner article
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
