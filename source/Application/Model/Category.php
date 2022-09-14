@@ -1125,25 +1125,6 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     }
 
     /**
-     * Returns long description, parsed through template engine. should only be used by exports or so.
-     * In templates use [{oxeval var=$oCategory->oxcategories__oxlongdesc->getRawValue()}]
-     *
-     * @return string
-     */
-    public function getLongDesc()
-    {
-        if (isset($this->oxcategories__oxlongdesc) && $this->oxcategories__oxlongdesc instanceof \OxidEsales\Eshop\Core\Field) {
-            $activeView = oxNew(FrontendController::class);
-            $activeView->addGlobalParams();
-            $utilsView = Registry::getUtilsView();
-            return $utilsView->getRenderedContent(
-                $this->oxcategories__oxlongdesc->getRawValue(),
-                $activeView->getViewData(),
-                $this->getId() . $this->getLanguage());
-        }
-    }
-
-    /**
      * Returns short description
      *
      * @return string

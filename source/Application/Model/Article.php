@@ -2586,26 +2586,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * get long description, parsed through template engine. should only be used by exports or so.
-     * In templates use [{oxeval var=$oProduct->getLongDescription()->getRawValue()}]
-     *
-     * @return string
-     */
-    public function getLongDesc()
-    {
-        if ($this->getLongDescription() && $this->getLongDescription()->getRawValue()) {
-            $activeView = oxNew(FrontendController::class);
-            $activeView->addGlobalParams();
-            $utilsView = Registry::getUtilsView();
-            return $utilsView->getRenderedContent(
-                $this->getLongDescription()->getRawValue(),
-                $activeView->getViewData(),
-                $this->getId() . $this->getLanguage());
-        }
-        return '';
-    }
-
-    /**
      * Save article long description to oxartext table
      *
      * @param string $longDescription description to set
