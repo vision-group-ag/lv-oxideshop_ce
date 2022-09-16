@@ -161,13 +161,9 @@ class SmartyContextTest extends \PHPUnit\Framework\TestCase
 
     public function testGetTemplateCompileDirectory()
     {
-        $config = $this->getConfigMock();
-        $utilsView = $this->getUtilsViewMock();
-        $utilsView->method('getSmartyDir')
-        ->will($this->returnValue('testCompileDir'));
+        $smartyContext = new SmartyContext(new BasicContextStub(), $this->getConfigMock(), $this->getUtilsViewMock());
 
-        $smartyContext = new SmartyContext(new BasicContextStub(), $config, $utilsView);
-        $this->assertSame('testCompileDir', $smartyContext->getTemplateCompileDirectory());
+        $this->assertIsString('testCompileDir', $smartyContext->getTemplateCompileDirectory());
     }
 
     public function testGetTemplateDirectories()

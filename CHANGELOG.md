@@ -6,10 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [7.0.0-rc.3] - Unreleased
 
+### Added
+- Methods:
+  - `Internal\Transition\Utility\BasicContextInterface::getTemplateCacheDirectory()`
+
 ### Removed
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
 - `oxid_esales.command.apply_modules_configuration_command` service
 - `ApplyModulesConfigurationCommand` moved to another repository
+- Methods:
+  - `Core\Utils::resetTemplateCache()`
+  - `Core\UtilsView::getSmartyDir()`
 
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`

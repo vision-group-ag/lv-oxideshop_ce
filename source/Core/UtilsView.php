@@ -9,9 +9,9 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
-use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
@@ -19,6 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\Templa
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Smarty;
 use Webmozart\PathUtil\Path;
 
@@ -329,29 +330,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns a full path to Smarty compile dir
-     *
-     * @return string
-     */
-    public function getSmartyDir()
-    {
-        $config = Registry::getConfig();
-
-        //check for the Smarty dir
-        $compileDir = $config->getConfigParam('sCompileDir');
-        $smartyDir = $compileDir . "/smarty/";
-        if (!is_dir($smartyDir)) {
-            @mkdir($smartyDir);
-        }
-
-        if (!is_writable($smartyDir)) {
-            $smartyDir = $compileDir;
-        }
-
-        return $smartyDir;
-    }
-
-    /**
      * sets properties of smarty object
      *
      * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
@@ -374,7 +352,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             ]
         );
 
-        $smartyDir = $this->getSmartyDir();
+        $smartyDir = $this->getContainer()->get(BasicContextInterface::class)->getTemplateCacheDirectory();
+        /** If cache dir is missing Smarty won't create it */
+        if (!\is_dir($smartyDir)) {
+            \mkdir($smartyDir);
+        }
 
         $smarty->caching = false;
         $smarty->compile_dir = $smartyDir;
