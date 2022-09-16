@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Configuration parameter `oxid_esales.templating.engine_autoescapes_html` that delegates HTML-escaping to templating engine
   (when set to true, `Core\Field` will contain non-escaped HTML special characters)
-
+- Methods:
+  - `Internal\Transition\Utility\BasicContextInterface::getTemplateCacheDirectory()`
 ### Removed
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
 - `oxid_esales.command.apply_modules_configuration_command` service
@@ -45,6 +46,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxfunctions:ox_get_timestamp()`
   - `oxfunctions:ox_get_secure()`
   - `oxfunctions:ox_get_trusted()`
+  - `Core\Utils::resetTemplateCache()`
+  - `Core\UtilsView::getSmartyDir()`
 - Class:
   - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`

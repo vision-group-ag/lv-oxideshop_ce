@@ -42,7 +42,7 @@ class TranslateFunctionLogic
      */
     public function getTranslation(array $params): string
     {
-        startProfile("smarty_function_oxmultilang");
+        startProfile('smarty_function_oxmultilang');
         $ident = $params['ident'] ?? 'IDENT MISSING';
         $args = $params['args'] ?? false;
         $suffix = $params['suffix'] ?? 'NO_SUFFIX';
@@ -52,7 +52,7 @@ class TranslateFunctionLogic
 
         try {
             $translation = $this->translator->translate($ident);
-            if ('NO_SUFFIX' != $suffix) {
+            if ($this->isTranslatableSuffix($suffix)) {
                 $suffixTranslation = $this->translator->translate($suffix);
             }
         } catch (TranslationNotFoundException $exception) {
@@ -66,15 +66,24 @@ class TranslateFunctionLogic
         }
         if ($translationFound) {
             $translation = $this->assignArgumentsToTranslation($translation, $args);
-            if ('NO_SUFFIX' != $suffix) {
+            if ($this->isTranslatableSuffix($suffix)) {
                 $translation .= $suffixTranslation;
             }
         } elseif ($this->showError($params)) {
-            $translation = 'ERROR: Translation for ' . $ident . ' not found!';
+            $translation = sprintf(
+                'ERROR: Translation for %s%s not found!',
+                $ident,
+                $this->isTranslatableSuffix($suffixTranslation) ? $suffixTranslation : ''
+            );
         }
-        stopProfile("smarty_function_oxmultilang");
+        stopProfile('smarty_function_oxmultilang');
 
         return $translation;
+    }
+
+    private function isTranslatableSuffix(string $suffix): bool
+    {
+        return !empty($suffix) && $suffix !== 'NO_SUFFIX';
     }
 
     /**

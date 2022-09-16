@@ -123,13 +123,9 @@ class SmartyContextTest extends TestCase
 
     public function testGetTemplateCompileDirectory(): void
     {
-        $config = $this->getConfigMock();
-        $utilsView = $this->getUtilsViewMock();
-        $utilsView->method('getSmartyDir')
-        ->will($this->returnValue('testCompileDir'));
+        $smartyContext = new SmartyContext(new ContextStub(), $this->getConfigMock(), $this->getUtilsViewMock());
 
-        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
-        $this->assertSame('testCompileDir', $smartyContext->getTemplateCompileDirectory());
+        $this->assertIsString('testCompileDir', $smartyContext->getTemplateCompileDirectory());
     }
 
     public function testGetTemplateDirectories(): void
