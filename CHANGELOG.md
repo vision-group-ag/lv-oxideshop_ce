@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
-- Methods:
+- Method:
   - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateCompileId()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
@@ -26,6 +26,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxfunctions:ox_get_timestamp()`
   - `oxfunctions:ox_get_secure()`
   - `oxfunctions:ox_get_trusted()`
+- Class:
+  - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
+  - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
+  - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
 
 ## [7.0.0-rc.2] - 2022-08-15
 
