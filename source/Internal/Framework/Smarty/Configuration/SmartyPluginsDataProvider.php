@@ -24,7 +24,7 @@ class SmartyPluginsDataProvider implements SmartyPluginsDataProviderInterface
 
     private function getShopSmartyPluginDirectory(): string
     {
-        return $this->getEditionsRootPaths() . DIRECTORY_SEPARATOR . 'Core/Smarty/Plugin';
+        return $this->getEditionsRootPaths() . DIRECTORY_SEPARATOR . 'Internal/Framework/Smarty/Plugin';
     }
 
     private function getEditionsRootPaths(): string
