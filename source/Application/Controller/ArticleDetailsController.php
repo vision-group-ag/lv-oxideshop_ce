@@ -319,8 +319,11 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         if (!$meta) {
             $article = $this->getProduct();
 
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
-                $meta = $article->getLongDesc();
+            if (Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
+                $meta = Registry::getUtilsView()->getRenderedContent(
+                    $article->getLongDescription()->getRawValue(),
+                    $this->getViewData(),
+                    $article->getId() . $article->getLanguage());
             } else {
                 $meta = $article->getLongDescription()->value;
             }
