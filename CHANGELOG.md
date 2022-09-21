@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDao`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationExtenderInterface`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationExtender`
-- Methods:
+- Method:
   - `Core\Field`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
@@ -42,6 +42,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxfunctions:ox_get_timestamp()`
   - `oxfunctions:ox_get_secure()`
   - `oxfunctions:ox_get_trusted()`
+- Class:
+  - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
+  - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
+  - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
 
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`

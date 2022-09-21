@@ -2985,24 +2985,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Smarty\Plugin\Emos'                                   => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter'                            => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosAdapter::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem'                               => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosItem::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Str'                                                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Str::class,
         'isAbstract'       => false,
