@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxid_esales.module.setup.class_extension_chain_service`
 - Methods:
   - `Core\Utils::resetTemplateCache()`
+  - `Core\UtilsView::getSmartyDir()`
 
 ## [6.12.0] - 2022-08-15
 

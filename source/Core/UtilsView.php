@@ -334,6 +334,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Returns a full path to Smarty compile dir
+     * @deprecated method will be removed in v7.0.
      *
      * @return string
      */
