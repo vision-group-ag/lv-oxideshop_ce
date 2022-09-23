@@ -67,7 +67,7 @@ class TemplateLoader implements TemplateLoaderInterface
         $file = $this->fileLocator->locate($filename);
 
         if (false === $file || null === $file || '' === $file) {
-            throw new TemplateFileNotFoundException(sprintf('Template "%s" not found', $name));
+//            throw new TemplateFileNotFoundException(sprintf('Template "%s" not found', $name));
         }
         return $file;
     }
