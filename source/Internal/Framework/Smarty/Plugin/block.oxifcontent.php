@@ -5,7 +5,10 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 
 /**
  * Smarty plugin
@@ -70,7 +73,14 @@ function smarty_block_oxifcontent($params, $content, &$smarty, &$repeat)
         $oStr = Str::getStr();
         $blHasSmarty = $oStr->strstr($content, '[{');
         if ($blHasSmarty) {
-            $content = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getRenderedContent($content, $myConfig->getActiveView()->getViewData(),$sIdent . md5($content));
+            $activeLanguageId = Registry::getLang()->getTplLanguage();
+            $renderer = ContainerFactory::getInstance()->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
+            $oxid = $sIdent . md5($content);
+            $content = $renderer->renderFragment(
+                $content,
+                "ox:{$oxid}{$activeLanguageId}",
+                $myConfig->getActiveView()->getViewData()
+            );
         }
 
         if ($sAssign) {

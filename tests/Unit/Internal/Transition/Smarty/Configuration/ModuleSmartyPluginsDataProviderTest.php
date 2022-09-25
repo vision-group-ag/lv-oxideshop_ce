@@ -25,7 +25,7 @@ class ModuleSmartyPluginsDataProviderTest extends \PHPUnit\Framework\TestCase
             $this->getShopAdapterMock()
         );
 
-        $settings = ['testModuleDir', 'testShopPath/Core/Smarty/Plugin'];
+        $settings = ['testModuleDir', 'testShopPath/Internal/Framework/Smarty/Plugin'];
 
         $this->assertEquals($settings, $dataProvider->getPlugins());
     }

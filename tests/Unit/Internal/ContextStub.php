@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
@@ -25,6 +26,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
     private $skipLogTags;
     private $adminUserId;
     private $productiveMode;
+    private $demoMode;
 
     /**
      * ContextStub constructor.
@@ -41,6 +43,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->doLogAdminQueries = $context->isEnabledAdminQueryLog();
         $this->isAdmin = $context->isAdmin();
         $this->skipLogTags = $context->getSkipLogTags();
+        $this->demoMode = $context->isShopInDemoMode();
     }
 
     /**
@@ -226,4 +229,21 @@ class ContextStub extends BasicContextStub implements ContextInterface
     {
         $this->productiveMode = $productiveMode;
     }
+
+    /**
+     * @return bool
+     */
+    public function isShopInDemoMode(): bool
+    {
+        return $this->demoMode;
+    }
+
+    /**
+     * @param bool $demoMode
+     */
+    public function setShopInDemoMode(bool $demoMode)
+    {
+        $this->demoMode = $demoMode;
+    }
+
 }

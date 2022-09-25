@@ -114,6 +114,11 @@ class SmartyContext implements SmartyContextInterface
         return $this->context->getSourcePath();
     }
 
+    public function isSmartyForContentDeactivated(): bool
+    {
+        return (bool) $this->getConfigParameter('deactivateSmartyForCmsContent');
+    }
+
     /**
      * @param string $name
      *
