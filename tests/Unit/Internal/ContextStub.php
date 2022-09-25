@@ -25,7 +25,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
     private $isAdmin;
     private $skipLogTags;
     private $adminUserId;
-    private $productiveMode;
+    private bool $productiveMode;
     private $demoMode;
 
     /**
@@ -43,6 +43,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->doLogAdminQueries = $context->isEnabledAdminQueryLog();
         $this->isAdmin = $context->isAdmin();
         $this->skipLogTags = $context->getSkipLogTags();
+        $this->productiveMode = $context->isShopInProductiveMode();
         $this->demoMode = $context->isShopInDemoMode();
     }
 
@@ -214,18 +215,12 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->skipLogTags = $skipLogTags;
     }
 
-    /**
-     * @return bool
-     */
     public function isShopInProductiveMode(): bool
     {
         return $this->productiveMode;
     }
 
-    /**
-     * @param bool $productiveMode
-     */
-    public function setShopInProductiveMode(bool $productiveMode)
+    public function setShopInProductiveMode(bool $productiveMode): void
     {
         $this->productiveMode = $productiveMode;
     }

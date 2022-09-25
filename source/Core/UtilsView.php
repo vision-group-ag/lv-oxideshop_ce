@@ -9,13 +9,17 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
+use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use Smarty;
 use Webmozart\PathUtil\Path;
 
 class UtilsView extends \OxidEsales\Eshop\Core\Base
@@ -198,31 +202,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         }
 
         return $this->_aTemplateDir;
-    }
-
-    /**
-     * Returns a full path to Smarty compile dir
-     *
-     * @deprecated since 6.13.0 please use
-     *
-     * @return string
-     */
-    public function getSmartyDir()
-    {
-        $config = Registry::getConfig();
-
-        //check for the Smarty dir
-        $compileDir = $config->getConfigParam('sCompileDir');
-        $smartyDir = $compileDir . "/smarty/";
-        if (!is_dir($smartyDir)) {
-            @mkdir($smartyDir);
-        }
-
-        if (!is_writable($smartyDir)) {
-            $smartyDir = $compileDir;
-        }
-
-        return $smartyDir;
     }
 
     /**
