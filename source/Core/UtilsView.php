@@ -203,6 +203,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns a full path to Smarty compile dir
      *
+     * @deprecated since 6.13.0 please use
+     *
      * @return string
      */
     public function getSmartyDir()
