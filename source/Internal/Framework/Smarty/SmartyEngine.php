@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
@@ -26,6 +27,7 @@ class SmartyEngine implements TemplateEngineInterface, SmartyEngineInterface
         private \Smarty $engine,
         private SmartyEngineBridgeInterface $bridge,
         private TemplateFileResolverInterface $templateFileResolver,
+        private SmartyContextInterface $context
     ) {
     }
 
@@ -60,6 +62,9 @@ class SmartyEngine implements TemplateEngineInterface, SmartyEngineInterface
      */
     public function renderFragment(string $fragment, string $fragmentId, array $context = []): string
     {
+        if ($this->doNotRender($fragment)) {
+            return $fragment;
+        }
         return $this->bridge->renderFragment($this->engine, $fragment, $fragmentId, $context);
     }
 
@@ -134,5 +139,10 @@ class SmartyEngine implements TemplateEngineInterface, SmartyEngineInterface
     public function setSmarty(\Smarty $smarty)
     {
         $this->engine = $smarty;
+    }
+
+    private function doNotRender(string $fragment): bool
+    {
+        return !str_contains($fragment, "[{") || $this->context->isSmartyForContentDeactivated();
     }
 }

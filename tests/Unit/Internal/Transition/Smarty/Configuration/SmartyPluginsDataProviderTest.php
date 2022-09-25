@@ -21,7 +21,7 @@ class SmartyPluginsDataProviderTest extends \PHPUnit\Framework\TestCase
 
         $dataProvider = new SmartyPluginsDataProvider($contextMock);
 
-        $settings = ['testShopPath/Core/Smarty/Plugin'];
+        $settings = ['testShopPath/Internal/Framework/Smarty/Plugin'];
 
         $this->assertEquals($settings, $dataProvider->getPlugins());
     }

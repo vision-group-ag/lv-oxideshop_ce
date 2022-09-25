@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty;
 
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
@@ -34,14 +35,10 @@ class SmartyContextTest extends TestCase
      */
     public function testGetTemplateEngineDebugMode(mixed $configValue, bool $debugMode): void
     {
-        $config = $this->getConfigMock();
-        $config->method('getConfigParam')
-            ->with('iDebug')
-            ->will($this->returnValue($configValue));
-
+        Registry::getConfig()->setConfigParam('iDebug', $configValue);
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
         $this->assertSame($debugMode, $smartyContext->getTemplateEngineDebugMode());
     }
 
@@ -60,69 +57,52 @@ class SmartyContextTest extends TestCase
      */
     public function testShowTemplateNames(int $configValue, bool $adminMode, bool $result): void
     {
-        $config = $this->getConfigMock();
-        $config->method('getConfigParam')
-            ->with('iDebug')
-            ->will($this->returnValue($configValue));
-        $config->method('isAdmin')
-            ->will($this->returnValue($adminMode));
-
+        Registry::getConfig()->setConfigParam('iDebug', $configValue);
+        Registry::getConfig()->setAdminMode($adminMode);
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
         $this->assertSame($result, $smartyContext->showTemplateNames());
     }
 
     public function testGetTemplateSecurityMode(): void
     {
-        $config = $this->getConfigMock();
-        $config->method('isDemoShop')
-            ->will($this->returnValue(true));
+        Registry::getConfig()->setConfigParam('iDebug', true);
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
         $this->assertSame(true, $smartyContext->getTemplateSecurityMode());
     }
 
     public function testGetTemplateCompileCheckMode(): void
     {
-        $config = $this->getConfigMock();
-        $config->method('getConfigParam')
-            ->with('blCheckTemplates')
-            ->will($this->returnValue(true));
+        Registry::getConfig()->setConfigParam('blCheckTemplates', true);
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
         $this->assertSame(true, $smartyContext->getTemplateCompileCheckMode());
     }
 
     public function testGetTemplateCompileCheckModeInProductiveMode(): void
     {
-        $config = $this->getConfigMock();
-        $config->method('getConfigParam')
-            ->with('blCheckTemplates')
-            ->will($this->returnValue(true));
-        $config->method('isProductiveMode')
-            ->will($this->returnValue(true));
+        Registry::getConfig()->setConfigParam('blCheckTemplates', true);
+        Registry::getConfig()->setConfigParam('blProductive', true);
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
         $this->assertFalse($smartyContext->getTemplateCompileCheckMode());
     }
 
     public function testGetTemplatePhpHandlingMode(): void
     {
-        $config = $this->getConfigMock();
-        $config->method('getConfigParam')
-            ->with('iSmartyPhpHandling')
-            ->will($this->returnValue(1));
+        Registry::getConfig()->setConfigParam('iSmartyPhpHandling', 1);
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
         $this->assertSame(1, $smartyContext->getTemplatePhpHandlingMode());
     }
 
@@ -187,6 +167,17 @@ class SmartyContextTest extends TestCase
 
         $smartyContext = new SmartyContext($basicContext, $config, $utilsView);
         $this->assertSame('testSourcePath', $smartyContext->getSourcePath());
+    }
+
+    public function testIsSmartyForContentDeactivated(): void
+    {
+        $config = $this->getConfigMock();
+        $config->method('getConfigParam')
+            ->with('deactivateSmartyForCmsContent')
+            ->will($this->returnValue(1));
+
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $this->getUtilsViewMock());
+        $this->assertTrue($smartyContext->isSmartyForContentDeactivated());
     }
 
     /**

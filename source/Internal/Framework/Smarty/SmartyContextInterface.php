@@ -62,4 +62,6 @@ interface SmartyContextInterface
      * @return string
      */
     public function getSourcePath(): string;
+
+    public function isSmartyForContentDeactivated(): bool;
 }

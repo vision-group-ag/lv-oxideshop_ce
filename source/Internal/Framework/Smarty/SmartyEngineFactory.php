@@ -20,7 +20,8 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
     public function __construct(
         private SmartyBuilderInterface $smartyBuilder,
         private SmartyConfigurationInterface $smartyConfiguration,
-        private TemplateFileResolverInterface $templateFileResolver
+        private TemplateFileResolverInterface $templateFileResolver,
+        private SmartyContextInterface $context
     ) {
     }
 
@@ -39,6 +40,6 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
 
         // TODO Event for smarty object configuration
 
-        return new SmartyEngine($smarty, new SmartyEngineBridge(), $this->templateFileResolver);
+        return new SmartyEngine($smarty, new SmartyEngineBridge(), $this->templateFileResolver, $this->context);
     }
 }

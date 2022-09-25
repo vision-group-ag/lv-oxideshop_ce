@@ -84,10 +84,13 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
     private function prepareLongDescription(Article $article): string
     {
         if ($article->getLongDescription() && $article->getLongDescription()->getRawValue()) {
-            return Registry::getUtilsView()->getRenderedContent(
+            $activeLanguageId = Registry::getLang()->getTplLanguage();
+            $oxid = (string) $article->getId() . (string) $article->getLanguage();
+            return $this->getRenderer()->renderFragment(
                 $article->getLongDescription()->getRawValue(),
-                $this->getViewData(),
-                $article->getId() . $article->getLanguage());
+                "ox:{$oxid}{$activeLanguageId}",
+                $this->getViewData()
+            );
         }
         return '';
     }

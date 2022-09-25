@@ -166,29 +166,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Runs long description through template engine.
-     *
-     * @param string $description Description
-     * @param array $context View data to use its view data (optional)
-     * @param ?string $oxid Current object id
-     * @return string
-     */
-    public function getRenderedContent(string $description, array $context, string $oxid = null): string
-    {
-        if ($this->skipSmartyRender()) {
-            return $description;
-        }
-        $activeLanguageId = Registry::getLang()->getTplLanguage();
-        $renderer = clone $this->getRenderer();
-
-        return $renderer->renderFragment(
-            $description,
-            "ox:{$oxid}{$activeLanguageId}",
-            $context
-        );
-    }
-
-    /**
      * Templates directory setter
      *
      * @param string $templatesDirectory templates path
@@ -565,11 +542,5 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     private function prepareBlockKey($activeBlockTemplate)
     {
         return $activeBlockTemplate['OXTEMPLATE'] . $activeBlockTemplate['OXBLOCKNAME'];
-    }
-
-    private function skipSmartyRender(): bool
-    {
-        return Registry::getConfig()->isDemoShop()
-            || Registry::getConfig()->getConfigParam('deactivateSmartyForCmsContent');
     }
 }

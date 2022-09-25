@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use function basename;
 
 /**
@@ -512,10 +514,17 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $activeView = oxNew(FrontendController::class);
         $activeView->addGlobalParams();
-        return Registry::getUtilsView()->getRenderedContent(
+        $activeLanguageId = Registry::getLang()->getTplLanguage();
+        return $this->getRenderer()->renderFragment(
             $this->getContent()->oxcontents__oxcontent->value,
-            $activeView->getViewData(),
-            $this->getContent()->getId());
+            "ox:{$this->getContent()->getId()}{$activeLanguageId}",
+            $activeView->getViewData()
+        );
+    }
+
+    private function getRenderer(): TemplateRendererInterface
+    {
+        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
     }
 
     /**

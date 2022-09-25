@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use OxidEsales\Facts\Facts;
 use stdClass;
@@ -278,12 +280,20 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         if ($article->getLongDescription() && $article->getLongDescription()->getRawValue()) {
             $activeView = oxNew(FrontendController::class);
             $activeView->addGlobalParams();
-            return Registry::getUtilsView()->getRenderedContent(
+            $oxid = (string) $article->getId() . (string) $article->getLanguage();
+            $activeLanguageId = Registry::getLang()->getTplLanguage();
+            return $this->getRenderer()->renderFragment(
                 $article->getLongDescription()->getRawValue(),
-                $activeView->getViewData(),
-                $article->getId() . $article->getLanguage());
+                "ox:{$oxid}{$activeLanguageId}",
+                $activeView->getViewData()
+            );
         }
         return '';
+    }
+
+    private function getRenderer(): TemplateRendererInterface
+    {
+        return $this->getContainer()->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
     }
 
     /**
