@@ -303,4 +303,9 @@ class BasicContextStub implements BasicContextInterface
     {
         return $this->templateCacheDirectory;
     }
+
+    public function setTemplateCacheDirectory(string $templateCacheDirectory): void
+    {
+        $this->templateCacheDirectory = $templateCacheDirectory;
+    }
 }

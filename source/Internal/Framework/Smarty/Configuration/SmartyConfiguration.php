@@ -36,6 +36,8 @@ class SmartyConfiguration implements SmartyConfigurationInterface
      */
     private $securitySettings = [];
 
+    private string $compilePath = '';
+
     /**
      * Return global smarty settings.
      *
@@ -134,5 +136,15 @@ class SmartyConfiguration implements SmartyConfigurationInterface
     public function setPrefilters(array $prefilters)
     {
         $this->prefilters = $prefilters;
+    }
+
+    public function getTemplateCompilePath(): string
+    {
+        return $this->compilePath;
+    }
+
+    public function setTemplateCompilePath(string $compilePath): void
+    {
+        $this->compilePath = $compilePath;
     }
 }

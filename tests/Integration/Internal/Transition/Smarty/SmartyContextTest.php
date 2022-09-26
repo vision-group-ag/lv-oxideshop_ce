@@ -35,10 +35,14 @@ class SmartyContextTest extends TestCase
      */
     public function testGetTemplateEngineDebugMode(mixed $configValue, bool $debugMode): void
     {
-        Registry::getConfig()->setConfigParam('iDebug', $configValue);
+        $config = $this->getConfigMock();
+        $config->method('getConfigParam')
+            ->with('iDebug')
+            ->will($this->returnValue($configValue));
+
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame($debugMode, $smartyContext->getTemplateEngineDebugMode());
     }
 
@@ -57,52 +61,71 @@ class SmartyContextTest extends TestCase
      */
     public function testShowTemplateNames(int $configValue, bool $adminMode, bool $result): void
     {
+        $config = $this->getConfigMock();
+        $config->method('getConfigParam')
+            ->with('iDebug')
+            ->will($this->returnValue($configValue));
+        $config->method('isAdmin')
+            ->will($this->returnValue($adminMode));
+
+
         Registry::getConfig()->setConfigParam('iDebug', $configValue);
-        Registry::getConfig()->setAdminMode($adminMode);
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame($result, $smartyContext->showTemplateNames());
     }
 
     public function testGetTemplateSecurityMode(): void
     {
-        Registry::getConfig()->setConfigParam('iDebug', true);
+        $config = $this->getConfigMock();
+        $config->method('isDemoShop')
+            ->will($this->returnValue(true));
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame(true, $smartyContext->getTemplateSecurityMode());
     }
 
     public function testGetTemplateCompileCheckMode(): void
     {
-        Registry::getConfig()->setConfigParam('blCheckTemplates', true);
+        $config = $this->getConfigMock();
+        $config->method('getConfigParam')
+            ->with('blCheckTemplates')
+            ->will($this->returnValue(true));
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame(true, $smartyContext->getTemplateCompileCheckMode());
     }
 
     public function testGetTemplateCompileCheckModeInProductiveMode(): void
     {
-        Registry::getConfig()->setConfigParam('blCheckTemplates', true);
-        Registry::getConfig()->setConfigParam('blProductive', true);
+        $config = $this->getConfigMock();
+        $config->method('getConfigParam')
+            ->with('blCheckTemplates')
+            ->will($this->returnValue(true));
+        $config->method('isProductiveMode')
+            ->will($this->returnValue(true));
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertFalse($smartyContext->getTemplateCompileCheckMode());
     }
 
     public function testGetTemplatePhpHandlingMode(): void
     {
-        Registry::getConfig()->setConfigParam('iSmartyPhpHandling', 1);
+        $config = $this->getConfigMock();
+        $config->method('getConfigParam')
+            ->with('iSmartyPhpHandling')
+            ->will($this->returnValue(1));
 
         $utilsView = $this->getUtilsViewMock();
 
-        $smartyContext = new SmartyContext(new ContextStub(), $utilsView);
+        $smartyContext = new SmartyContext(new ContextStub(), $config, $utilsView);
         $this->assertSame(1, $smartyContext->getTemplatePhpHandlingMode());
     }
 
@@ -123,9 +146,14 @@ class SmartyContextTest extends TestCase
 
     public function testGetTemplateCompileDirectory(): void
     {
-        $smartyContext = new SmartyContext(new ContextStub(), $this->getConfigMock(), $this->getUtilsViewMock());
+        $context = new ContextStub();
+        $context->setTemplateCacheDirectory('testCompileDir');
+        $config = $this->getConfigMock();
 
-        $this->assertIsString('testCompileDir', $smartyContext->getTemplateCompileDirectory());
+        $utilsView = $this->getUtilsViewMock();
+
+        $smartyContext = new SmartyContext($context, $config, $utilsView);
+        $this->assertSame('testCompileDir', $smartyContext->getTemplateCompileDirectory());
     }
 
     public function testGetTemplateDirectories(): void
@@ -158,10 +186,10 @@ class SmartyContextTest extends TestCase
     {
         $config = $this->getConfigMock();
         $utilsView = $this->getUtilsViewMock();
-        $basicContext = new ContextStub();
-        $basicContext->setSourcePath('testSourcePath');
+        $context = new ContextStub();
+        $context->setSourcePath('testSourcePath');
 
-        $smartyContext = new SmartyContext($basicContext, $config, $utilsView);
+        $smartyContext = new SmartyContext($context, $config, $utilsView);
         $this->assertSame('testSourcePath', $smartyContext->getSourcePath());
     }
 

@@ -26,8 +26,6 @@ class SmartySettingsDataProviderTest extends TestCase
             'caching' => false,
             'left_delimiter' => '[{',
             'right_delimiter' => '}]',
-            'compile_dir' => 'testCompileDir',
-            'cache_dir' => 'testCompileDir',
             'template_dir' => ['testTemplateDir'],
             'compile_id' => '7f96e0d92070fd4733296e5118fd5a01',
             'default_template_handler_func' => [new SmartyDefaultTemplateHandler($smartyContextMock), 'handleTemplate'],
@@ -49,10 +47,6 @@ class SmartySettingsDataProviderTest extends TestCase
         $smartyContextMock
             ->method('getTemplateEngineDebugMode')
             ->willReturn(true);
-
-        $smartyContextMock
-            ->method('getTemplateCompileDirectory')
-            ->willReturn('testCompileDir');
 
         $smartyContextMock
             ->method('getTemplateDirectories')

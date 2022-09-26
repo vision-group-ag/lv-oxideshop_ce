@@ -31,6 +31,7 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
     public function getTemplateEngine(): TemplateEngineInterface
     {
         $smarty = $this->smartyBuilder
+            ->setTemplateCompilePath($this->smartyConfiguration->getTemplateCompilePath())
             ->setSettings($this->smartyConfiguration->getSettings())
             ->setSecuritySettings($this->smartyConfiguration->getSecuritySettings())
             ->registerPlugins($this->smartyConfiguration->getPlugins())

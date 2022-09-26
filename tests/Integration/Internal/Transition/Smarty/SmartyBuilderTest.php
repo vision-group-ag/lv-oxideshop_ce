@@ -14,9 +14,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPlug
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilder;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Symfony\Component\Filesystem\Filesystem;
 
 class SmartyBuilderTest extends IntegrationTestCase
 {
+    use ProphecyTrait;
     private $debugMode;
 
     public function setup(): void
@@ -42,10 +46,14 @@ class SmartyBuilderTest extends IntegrationTestCase
         $config = Registry::getConfig();
         $config->setConfigParam('blDemoShop', $securityMode);
         $config->setConfigParam('iDebug', 0);
+        $cachePath = (new ContextStub())->getTemplateCacheDirectory();
+        $filesystem = $this->prophesize(Filesystem::class);
+        $filesystem->exists($cachePath)->willReturn(true);
 
         $configuration = $this->get(SmartyConfigurationFactoryInterface::class)->getConfiguration();
-        $smarty = (new SmartyBuilder())
+        $smarty = (new SmartyBuilder($filesystem->reveal()))
             ->setSettings($configuration->getSettings())
+            ->setTemplateCompilePath($cachePath)
             ->setSecuritySettings($configuration->getSecuritySettings())
             ->registerPlugins($configuration->getPlugins())
             ->registerPrefilters($configuration->getPrefilters())
@@ -80,8 +88,8 @@ class SmartyBuilderTest extends IntegrationTestCase
             'left_delimiter' => '[{',
             'right_delimiter' => '}]',
             'caching' => false,
-            'compile_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
-            'cache_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
+            'compile_dir' => $config->getConfigParam('sCompileDir') . "template_cache",
+            'cache_dir' => $config->getConfigParam('sCompileDir') . "template_cache",
             'compile_id' => md5(reset($templateDirectories) . '__' . $shopId),
             'template_dir' => $templateDirectories,
             'debugging' => false,
@@ -134,8 +142,8 @@ class SmartyBuilderTest extends IntegrationTestCase
             'left_delimiter' => '[{',
             'right_delimiter' => '}]',
             'caching' => false,
-            'compile_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
-            'cache_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
+            'compile_dir' => $config->getConfigParam('sCompileDir') . "template_cache",
+            'cache_dir' => $config->getConfigParam('sCompileDir') . "template_cache",
             'compile_id' => md5(reset($templateDirectories) . '__' . $shopId),
             'template_dir' => $templateDirectories,
             'debugging' => false,

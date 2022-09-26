@@ -80,4 +80,9 @@ interface SmartyConfigurationInterface
      * @param array $prefilters
      */
     public function setPrefilters(array $prefilters);
+
+
+    public function getTemplateCompilePath(): string;
+
+    public function setTemplateCompilePath(string $compilePath): void;
 }
