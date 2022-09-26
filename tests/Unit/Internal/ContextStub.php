@@ -240,5 +240,4 @@ class ContextStub extends BasicContextStub implements ContextInterface
     {
         $this->demoMode = $demoMode;
     }
-
 }

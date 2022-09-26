@@ -28,13 +28,10 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
      */
     public function getSettings(): array
     {
-        $compilePath = $this->getTemplateCompilePath();
         return [
             'caching' => false,
             'left_delimiter' => '[{',
             'right_delimiter' => '}]',
-            'compile_dir' => $compilePath,
-            'cache_dir' => $compilePath,
             'template_dir' => $this->context->getTemplateDirectories(),
             'compile_id' => $this->context->getTemplateCompileId(),
             'default_template_handler_func' => [$this->smartyTemplateHandler, 'handleTemplate'],
@@ -43,15 +40,5 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
             'php_handling' => (int) $this->context->getTemplatePhpHandlingMode(),
             'security' => false
         ];
-    }
-
-    /**
-     * Returns a full path to Smarty compile dir
-     *
-     * @return string
-     */
-    private function getTemplateCompilePath(): string
-    {
-        return $this->context->getTemplateCompileDirectory();
     }
 }

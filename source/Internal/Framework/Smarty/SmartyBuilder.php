@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 class SmartyBuilder implements SmartyBuilderInterface
 {
     /**
@@ -16,7 +18,8 @@ class SmartyBuilder implements SmartyBuilderInterface
      */
     private $smarty;
 
-    public function __construct()
+    public function __construct(
+        private Filesystem $filesystem)
     {
         $this->smarty = new \Smarty();
     }
@@ -33,6 +36,18 @@ class SmartyBuilder implements SmartyBuilderInterface
         foreach ($settings as $key => $value) {
             $this->smarty->$key = $value;
         }
+        return $this;
+    }
+
+    public function setTemplateCompilePath(string $compilePath): self
+    {
+        if (!$this->filesystem->exists($compilePath)) {
+            $this->filesystem->mkdir($compilePath);
+        }
+
+        $this->smarty->compile_dir = $compilePath;
+        $this->smarty->cache_dir = $compilePath;
+
         return $this;
     }
 

@@ -12,6 +12,8 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilder
+    arguments:
+      $filesystem: '@oxid_esales.symfony.file_system'
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactory
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartySettingsDataProviderInterface:

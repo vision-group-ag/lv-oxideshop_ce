@@ -53,7 +53,7 @@ class SmartyContext implements SmartyContextInterface
      */
     public function getTemplateCompileDirectory(): string
     {
-        return $this->basicContext->getTemplateCacheDirectory();
+        return $this->context->getTemplateCacheDirectory();
     }
 
     /**
