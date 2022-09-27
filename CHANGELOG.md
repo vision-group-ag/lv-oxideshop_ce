@@ -12,8 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Methods:
   - `Internal\Transition\Utility\BasicContextInterface::getTemplateCacheDirectory()`
 ### Removed
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
-- `oxid_esales.command.apply_modules_configuration_command` service
+- Service:
+- `oxid_esales.command.apply_modules_configuration_command`
+- Command:
 - `ApplyModulesConfigurationCommand` moved to another repository
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
 - `oxid_esales.command.apply_modules_configuration_command` service
@@ -29,6 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationExtenderInterface`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationExtender`
 - Method:
+  - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
   - `Core\Field`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
@@ -41,17 +43,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyCompileCheck()`
   - `OxidEsales\EshopCommunity\Core\Email:_getSmarty()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:getSmarty()`
-  - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
   - `oxfunctions:ox_get_template()`
   - `oxfunctions:ox_get_timestamp()`
-  - `oxfunctions:ox_get_secure()`
   - `oxfunctions:ox_get_trusted()`
+  - `oxfunctions:ox_get_secure()`
   - `Core\Utils::resetTemplateCache()`
   - `Core\UtilsView::getSmartyDir()`
 - Class:
   - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
+  - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
+- Property:
+  - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
