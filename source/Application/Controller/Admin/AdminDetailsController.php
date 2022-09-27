@@ -12,25 +12,15 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 
-/**
- * Admin selectlist list manager.
- */
 class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-    /**
-     * Global editor object.
-     *
-     * @var object
-     */
-    protected $_oEditor = null;
-
     /** @inheritdoc */
     public function render()
     {
         $sReturn = parent::render();
 
         // generate help link
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         $sDir = $myConfig->getConfigParam('sShopDir') . '/documentation/admin';
         if (is_dir($sDir)) {
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
@@ -59,48 +49,21 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     }
 
     /**
-     * Returns string which must be edited by editor.
-     *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject object used for editing
-     * @param string                                 $sField  name of editable field
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object
+     * @param string $fieldName
      *
      * @return string
      */
-    protected function getEditValue($oObject, $sField)
+    protected function getEditValue($object, $fieldName)
     {
-        $sEditObjectValue = '';
-        if ($oObject && $sField && isset($oObject->$sField)) {
-            if ($oObject->$sField instanceof Field) {
-                $sEditObjectValue = $oObject->$sField->getRawValue();
-            } else {
-                $sEditObjectValue = $oObject->$sField->value;
-            }
-
-            $sEditObjectValue = $this->processEditValue($sEditObjectValue);
-            $oObject->$sField = new Field($sEditObjectValue, Field::T_RAW);
+        if (!$object || !$fieldName || !isset($object->$fieldName)) {
+            return '';
+        }
+        if (!$object->$fieldName instanceof Field) {
+            $object->$fieldName = new Field($object->$fieldName->value, Field::T_RAW);
         }
 
-        return $sEditObjectValue;
-    }
-
-    /**
-     * Processes edit value.
-     *
-     * @param string $sValue string to process
-     *
-     * @return string
-     */
-    protected function processEditValue($sValue)
-    {
-        // A. replace ONLY if long description is not processed by template engine, or users will not be able to
-        // store tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
-        // descriptions, which are filled dynamically
-        if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
-            $aReplace = ['[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]'];
-            $sValue = str_replace($aReplace, \OxidEsales\Eshop\Core\Registry::getConfig()->getCurrentShopURL(false), $sValue);
-        }
-
-        return $sValue;
+        return $object->$fieldName->getRawValue();
     }
 
     /**

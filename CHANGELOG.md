@@ -11,37 +11,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Transition\Utility\BasicContextInterface::getTemplateCacheDirectory()`
 
 ### Removed
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
-- `oxid_esales.command.apply_modules_configuration_command` service
+- Service:
+- `oxid_esales.command.apply_modules_configuration_command`
+- Command:
 - `ApplyModulesConfigurationCommand` moved to another repository
-- Methods:
-  - `Core\Utils::resetTemplateCache()`
-  - `Core\UtilsView::getSmartyDir()`
-
-### Fixed
-- Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
-
-### Removed
-
-- Method:
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateCompileId()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getSmartyPluginDirectories()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getShopSmartyPluginDirectories()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:_fillCommonSmartyProperties()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyCompileCheck()`
-  - `OxidEsales\EshopCommunity\Core\Email:_getSmarty()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getSmarty()`
-  - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
-  - `oxfunctions:ox_get_template()`
-  - `oxfunctions:ox_get_timestamp()`
-  - `oxfunctions:ox_get_secure()`
-  - `oxfunctions:ox_get_trusted()`
 - Class:
-  - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
+  - `Internal\Framework\Module\Setup\Exception\ModuleSetupException`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
+  - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
+- Methods:
+  - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
+  - `Application\Model\SmartyRenderer`
+  - `Core\Email:_getSmarty()`
+  - `Core\Utils::resetTemplateCache()`
+  - `Core\UtilsView::getSmartyDir()`
+  - `Core\UtilsView:_fillCommonSmartyProperties()`
+  - `Core\UtilsView:_smartyCompileCheck()`
+  - `Core\UtilsView:_smartyDefaultTemplateHandler()`
+  - `Core\UtilsView:getShopSmartyPluginDirectories()`
+  - `Core\UtilsView:getSmarty()`
+  - `Core\UtilsView:getSmartyPluginDirectories()`
+  - `Core\UtilsView:getTemplateCompileId()`
+  - `Core\UtilsView:parseThroughSmarty()`
+  - `oxfunctions:ox_get_secure()`
+  - `oxfunctions:ox_get_template()`
+  - `oxfunctions:ox_get_timestamp()`
+  - `oxfunctions:ox_get_trusted()`
+- Property:
+  - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
+
+### Fixed
+- Partly revert `Core\Autoload\ModuleAutoload`
 
 ## [7.0.0-rc.2] - 2022-08-15
 
