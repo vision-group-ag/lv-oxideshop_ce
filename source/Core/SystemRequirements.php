@@ -11,6 +11,8 @@ use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 
@@ -1053,12 +1055,18 @@ class SystemRequirements
         $result = [];
         $analized = [];
 
-        $blockRecords = $this->fetchBlockRecords();
+        $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
+        $config = Registry::getConfig();
 
-        if ($blockRecords != false && $blockRecords->count() > 0) {
-            while (!$blockRecords->EOF) {
-                $template = $blockRecords->fields['OXTEMPLATE'];
-                $blockName = $blockRecords->fields['OXBLOCKNAME'];
+        $templateBlockExtensions = $this->getContainer()
+            ->get(TemplateBlockExtensionDaoInterface::class)
+            ->getExtensionsByTheme($config->getShopId(), [$activeThemeId]);
+
+        if (count($templateBlockExtensions)) {
+            /** @var TemplateBlockExtension $templateBlockExtension */
+            foreach ($templateBlockExtensions as $templateBlockExtension) {
+                $template = $templateBlockExtension->getExtendedBlockTemplatePath();
+                $blockName = $templateBlockExtension->getName();
 
                 if (isset($analized[$template], $analized[$template][$blockName])) {
                     $blockExistsInTemplate = $analized[$template][$blockName];
@@ -1069,38 +1077,15 @@ class SystemRequirements
 
                 if (!$blockExistsInTemplate) {
                     $result[] = [
-                        'module'   => $blockRecords->fields['OXMODULE'],
+                        'module'   => $templateBlockExtension->getModuleId(),
                         'block'    => $blockName,
                         'template' => $template,
                     ];
                 }
-
-                $blockRecords->fetchRow();
             }
         }
 
         return $result;
-    }
-
-    /**
-     * Fetch the active template blocks for the active shop and the active theme.
-     *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
-     *
-     * @return ResultSetInterface The active template blocks for the active shop and the active theme.
-     */
-    protected function fetchBlockRecords()
-    {
-        $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
-        $config = Registry::getConfig();
-        $database = DatabaseConnectionProvider::getDb(DatabaseConnectionProvider::FETCH_MODE_ASSOC);
-
-        $query = "select * from oxtplblocks where oxactive = 1 and oxshopid = :oxshopid and oxtheme in ('', :oxtheme)";
-
-        return $database->select($query, [
-            ':oxshopid' => $config->getShopId(),
-            ':oxtheme' => $activeThemeId
-        ]);
     }
 
     /**

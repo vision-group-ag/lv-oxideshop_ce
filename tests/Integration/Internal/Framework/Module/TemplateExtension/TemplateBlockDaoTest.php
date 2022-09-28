@@ -74,6 +74,18 @@ class TemplateBlockDaoTest extends IntegrationTestCase
         $this->assertEquals(3, count($blocks));
     }
 
+    public function testGetExtensionsByTheme()
+    {
+        $blocks = $this->templateBlockDao->getExtensionsByTheme(1, ['testThemeId', 'testThemeId2']);
+        $this->assertEquals(4, count($blocks));
+    }
+
+    public function testGetExtensionsByThemeNonGiven()
+    {
+        $blocks = $this->templateBlockDao->getExtensionsByTheme(1);
+        $this->assertEquals(1, count($blocks));
+    }
+
     public function testExistExtension()
     {
         $this->assertTrue($this->templateBlockDao->exists( ['testModuleId', 'testModuleId2'], 1));
