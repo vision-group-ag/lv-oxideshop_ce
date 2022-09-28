@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
@@ -20,10 +22,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
     ) {
     }
 
-    /**
-     * @param TemplateBlockExtension $templateBlockExtension
-     */
-    public function add(TemplateBlockExtension $templateBlockExtension)
+    public function add(TemplateBlockExtension $templateBlockExtension): void
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -53,11 +52,6 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
         $queryBuilder->execute();
     }
 
-    /**
-     * @param string $name
-     * @param int    $shopId
-     * @return array
-     */
     public function getExtensions(string $name, int $shopId): array
     {
         $queryBuilder = $this->queryBuilderFactory->create();
@@ -77,11 +71,52 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
         return $this->mapDataToObjects($blocksData);
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
-    public function deleteExtensions(string $moduleId, int $shopId)
+    public function getExtensionsByTemplateName(string $templateName, array $moduleIds, int $shopId, array $themeIds = []): array
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->select('*')
+            ->from('oxtplblocks')
+            ->where('oxactive = 1')
+            ->andWhere('oxshopid = ' . $queryBuilder->createPositionalParameter(
+                $shopId,
+                ParameterType::INTEGER
+                ))
+            ->andWhere('oxtemplate = ' . $queryBuilder->createPositionalParameter($templateName))
+            ->andWhere('oxmodule in (' . $queryBuilder->createPositionalParameter(
+                array_values( $moduleIds),
+                Connection::PARAM_STR_ARRAY
+                ) . ')')
+            ->andWhere('oxtheme in (' . $queryBuilder->createPositionalParameter(
+                $this->formActiveThemesId($themeIds),
+                Connection::PARAM_STR_ARRAY
+                ) . ')');
+
+        $blocksData = $queryBuilder->execute()->fetchAll();
+
+        return $this->mapDataToObjects($blocksData);
+    }
+
+    public function exists(array $moduleIds, int $shopId): bool
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->select('oxid')
+            ->from('oxtplblocks')
+            ->where('oxactive = 1')
+            ->andWhere('oxshopid = ' . $queryBuilder->createPositionalParameter(
+                    $shopId,
+                    ParameterType::INTEGER
+                ))
+            ->andWhere('oxmodule in (' . $queryBuilder->createPositionalParameter(
+                    array_values( $moduleIds),
+                    Connection::PARAM_STR_ARRAY
+                ) . ')');
+
+        return (bool) $queryBuilder->execute()->fetchOne();
+    }
+
+    public function deleteExtensions(string $moduleId, int $shopId): void
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -133,5 +168,13 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
         }
 
         return $templateBlockExtensions;
+    }
+
+    private function formActiveThemesId(array $activeThemeIds): array
+    {
+        // if theme is not defined should also be included
+        array_unshift($activeThemeIds, '');
+
+        return array_values($activeThemeIds);
     }
 }

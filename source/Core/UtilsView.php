@@ -9,16 +9,14 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\StandardException;
-use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
-use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Smarty;
 use Webmozart\PathUtil\Path;
 
@@ -231,8 +229,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             $activeModulesIds = $this->getContainer()->get(ActiveModulesDataProviderBridgeInterface::class)->getModuleIds();
             $activeThemeIds = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemesList();
 
-            $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
-            $activeBlockTemplates = $templateBlockRepository->getBlocks($templateFileName, $activeModulesIds, $shopId, $activeThemeIds);
+            $templateBlockDao = $this->getContainer()->get(TemplateBlockExtensionDaoInterface::class);
+            $activeBlockTemplates = $templateBlockDao->getExtensionsByTemplateName($templateFileName, $activeModulesIds, $shopId, $activeThemeIds);
 
             if ($activeBlockTemplates) {
                 $activeBlockTemplatesByTheme = $this->filterTemplateBlocks($activeBlockTemplates);
@@ -362,9 +360,10 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $templateBlocksToExchange = [];
         $customThemeId = Registry::getConfig()->getConfigParam('sCustomTheme');
 
+        /** @var TemplateBlockExtension $activeBlockTemplate */
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
-            if ($activeBlockTemplate['OXTHEME']) {
-                if ($customThemeId && $customThemeId === $activeBlockTemplate['OXTHEME']) {
+            if ($activeBlockTemplate->getThemeId()) {
+                if ($customThemeId && $customThemeId === $activeBlockTemplate->getThemeId()) {
                     $templateBlocksToExchange['custom_theme'][] = $this->prepareBlockKey($activeBlockTemplate);
                 } else {
                     $templateBlocksToExchange['theme'][] = $this->prepareBlockKey($activeBlockTemplate);
@@ -386,10 +385,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     private function removeDefaultBlocks($activeBlockTemplates, $templateBlocksToExchange)
     {
         $templateBlocks = [];
+        /** @var TemplateBlockExtension $activeBlockTemplate */
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
             if (
                 !in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['theme'])
-                || $activeBlockTemplate['OXTHEME']
+                || $activeBlockTemplate->getThemeId()
             ) {
                 $templateBlocks[] = $activeBlockTemplate;
             }
@@ -411,10 +411,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $activeBlockTemplates = $templateBlocks;
         $templateBlocks = [];
         $customThemeId = Registry::getConfig()->getConfigParam('sCustomTheme');
+        /** @var TemplateBlockExtension $activeBlockTemplate */
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
             if (
                 !in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['custom_theme'])
-                || $activeBlockTemplate['OXTHEME'] === $customThemeId
+                || $activeBlockTemplate->getThemeId() === $customThemeId
             ) {
                 $templateBlocks[] = $activeBlockTemplate;
             }
@@ -460,17 +461,18 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     {
         $templateBlocksWithContent = [];
 
+        /** @var TemplateBlockExtension $activeBlockTemplate */
         foreach ($blockTemplates as $activeBlockTemplate) {
             try {
-                if (!is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
-                    $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = [];
+                if (!is_array($templateBlocksWithContent[$activeBlockTemplate->getName()])) {
+                    $templateBlocksWithContent[$activeBlockTemplate->getName()] = [];
                 }
-                $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this
+                $templateBlocksWithContent[$activeBlockTemplate->getName()][] = $this
                     ->getContainer()
                     ->get(TemplateBlockLoaderBridgeInterface::class)
                     ->getContent(
-                        $activeBlockTemplate['OXFILE'],
-                        $activeBlockTemplate['OXMODULE']
+                        $activeBlockTemplate->getFilePath(),
+                        $activeBlockTemplate->getModuleId()
                     );
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
                 Registry::getLogger()->error($exception->getMessage(), [$exception]);
@@ -498,13 +500,9 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         $activeModulesIds = $this->getContainer()->get(ActiveModulesDataProviderBridgeInterface::class)->getModuleIds();
         if (count($activeModulesIds)) {
-            $templateBlockRepository = oxNew(ModuleTemplateBlockRepository::class);
 
-            $blocksCount = $templateBlockRepository->getBlocksCount($activeModulesIds, Registry::getConfig()->getShopId());
-
-            if ($blocksCount) {
-                $moduleOverridesTemplate = true;
-            }
+            $templateBlockDao = $this->getContainer()->get(TemplateBlockExtensionDaoInterface::class);
+            $moduleOverridesTemplate = $templateBlockDao->exists($activeModulesIds, Registry::getConfig()->getShopId());
         }
 
         $this->_blIsTplBlocks = $moduleOverridesTemplate;
@@ -516,12 +514,12 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      * Prepare indicator for template block.
      * This indicator might be used to identify same template block for different theme.
      *
-     * @param array $activeBlockTemplate
+     * @param TemplateBlockExtension $activeBlockTemplate
      *
      * @return string
      */
     private function prepareBlockKey($activeBlockTemplate)
     {
-        return $activeBlockTemplate['OXTEMPLATE'] . $activeBlockTemplate['OXBLOCKNAME'];
+        return $activeBlockTemplate->getExtendedBlockTemplatePath() . $activeBlockTemplate->getName();
     }
 }
