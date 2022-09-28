@@ -12,20 +12,28 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 /**
  * @internal
  */
-class TemplateBlockDaoTest extends TestCase
+class TemplateBlockDaoTest extends IntegrationTestCase
 {
     use ContainerTrait;
+
+    private TemplateBlockExtensionDaoInterface $templateBlockDao;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->prepareTestData();
+    }
 
     public function testAddTemplateBlock()
     {
         $templateBlock = new TemplateBlockExtension();
         $templateBlock
-            ->setName('testTemplateBlock')
+            ->setName('testAddTemplateBlock')
             ->setFilePath('blockFilePath')
             ->setExtendedBlockTemplatePath('shopTemplatePath')
             ->setPosition(1)
@@ -38,11 +46,50 @@ class TemplateBlockDaoTest extends TestCase
 
         $this->assertEquals(
             [$templateBlock],
-            $templateBlockDao->getExtensions('testTemplateBlock', 1)
+            $templateBlockDao->getExtensions('testAddTemplateBlock', 1)
         );
     }
 
     public function testDeleteAllModuleTemplateBlocks()
+    {
+        $this->templateBlockDao->deleteExtensions('testModuleId', 1);
+        $this->templateBlockDao->deleteExtensions('testModuleId2', 1);
+        $this->templateBlockDao->deleteExtensions('testModuleId3', 1);
+
+        $this->assertEquals(
+            [],
+            $this->templateBlockDao->getExtensions('testTemplateBlock', 1)
+        );
+    }
+
+    public function testGetExtensionsByTemplateNameOnlyModuleGiven()
+    {
+        $blocks = $this->templateBlockDao->getExtensionsByTemplateName('shopTemplatePath', ['testModuleId', 'testModuleId2'], 1);
+        $this->assertEquals(1, count($blocks));
+    }
+
+    public function testGetExtensionsByTemplateNameModuleAndThemeGiven()
+    {
+        $blocks = $this->templateBlockDao->getExtensionsByTemplateName('shopTemplatePath', ['testModuleId', 'testModuleId2'], 1, ['testThemeId', 'testThemeId2']);
+        $this->assertEquals(3, count($blocks));
+    }
+
+    public function testExistExtension()
+    {
+        $this->assertTrue($this->templateBlockDao->exists( ['testModuleId', 'testModuleId2'], 1));
+    }
+
+    public function testDoesNotExistExtension()
+    {
+        $this->assertFalse($this->templateBlockDao->exists(['testModuleDoesNotExist'], 1));
+    }
+
+    private function getTemplateBlockDao(): TemplateBlockExtensionDaoInterface
+    {
+        return $this->get(TemplateBlockExtensionDaoInterface::class);
+    }
+
+    private function prepareTestData()
     {
         $templateBlock = new TemplateBlockExtension();
         $templateBlock
@@ -51,31 +98,42 @@ class TemplateBlockDaoTest extends TestCase
             ->setExtendedBlockTemplatePath('shopTemplatePath')
             ->setPosition(1)
             ->setModuleId('testModuleId')
+            ->setThemeId('testThemeId')
             ->setShopId(1);
 
         $templateBlock2 = new TemplateBlockExtension();
         $templateBlock2
-            ->setName('testTemplateBlock2')
+            ->setName('testTemplateBlock')
+            ->setFilePath('blockFilePath')
+            ->setExtendedBlockTemplatePath('shopTemplatePath')
+            ->setPosition(2)
+            ->setModuleId('testModuleId2')
+            ->setThemeId('testThemeId2')
+            ->setShopId(1);
+
+        $templateBlock3 = new TemplateBlockExtension();
+        $templateBlock3
+            ->setName('testTemplateBlock')
+            ->setFilePath('blockFilePath')
+            ->setExtendedBlockTemplatePath('shopTemplatePath')
+            ->setPosition(2)
+            ->setModuleId('testModuleId3')
+            ->setThemeId('testThemeId2')
+            ->setShopId(1);
+
+        $templateBlockWithoutTheme = new TemplateBlockExtension();
+        $templateBlockWithoutTheme
+            ->setName('testTemplateBlock')
             ->setFilePath('blockFilePath')
             ->setExtendedBlockTemplatePath('shopTemplatePath')
             ->setPosition(1)
             ->setModuleId('testModuleId')
             ->setShopId(1);
 
-        $templateBlockDao = $this->getTemplateBlockDao();
-        $templateBlockDao->add($templateBlock);
-        $templateBlockDao->add($templateBlock2);
-
-        $templateBlockDao->deleteExtensions('testModuleId', 1);
-
-        $this->assertEquals(
-            [],
-            $templateBlockDao->getExtensions('testTemplateBlock', 1)
-        );
-    }
-
-    private function getTemplateBlockDao(): TemplateBlockExtensionDaoInterface
-    {
-        return $this->get(TemplateBlockExtensionDaoInterface::class);
+        $this->templateBlockDao = $this->getTemplateBlockDao();
+        $this->templateBlockDao->add($templateBlock);
+        $this->templateBlockDao->add($templateBlock2);
+        $this->templateBlockDao->add($templateBlock3);
+        $this->templateBlockDao->add($templateBlockWithoutTheme);
     }
 }

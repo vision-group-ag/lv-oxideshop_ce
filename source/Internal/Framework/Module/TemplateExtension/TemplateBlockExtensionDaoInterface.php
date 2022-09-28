@@ -11,21 +11,13 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
 
 interface TemplateBlockExtensionDaoInterface
 {
-    /**
-     * @param TemplateBlockExtension $templateBlockExtension
-     */
-    public function add(TemplateBlockExtension $templateBlockExtension);
+    public function add(TemplateBlockExtension $templateBlockExtension): void;
 
-    /**
-     * @param string $name
-     * @param int    $shopId
-     * @return array
-     */
     public function getExtensions(string $name, int $shopId): array;
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
-    public function deleteExtensions(string $moduleId, int $shopId);
+    public function getExtensionsByTemplateName(string $templateName, array $moduleIds, int $shopId, array $themeIds = []): array;
+
+    public function exists(array $moduleIds, int $shopId): bool;
+
+    public function deleteExtensions(string $moduleId, int $shopId): void;
 }
