@@ -50,3 +50,12 @@ services:
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\ModuleSmartyPluginsDataProviderInterface.inner'
       - '@OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface'
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\SystemRequirements\MissingTemplateBlocksCheckerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SystemRequirements\MissingTemplateBlocksChecker
+    public: true
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+      - '@oxid_esales.templating.admin.template.loader'
+      - '@oxid_esales.templating.frontend.template.loader'
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface'

@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\Email:_getSmarty()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:getSmarty()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateBlocks()`
+  - `OxidEsales\EshopCommunity\Core\SystemRequirements::getMissingTemplateBlocks`
   - `oxfunctions:ox_get_template()`
   - `oxfunctions:ox_get_timestamp()`
   - `oxfunctions:ox_get_trusted()`
