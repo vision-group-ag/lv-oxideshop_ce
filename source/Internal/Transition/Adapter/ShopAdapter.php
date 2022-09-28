@@ -193,4 +193,15 @@ class ShopAdapter implements ShopAdapterInterface
     {
         return (string) Registry::getConfig()->getConfigParam('sCustomTheme');
     }
+
+    public function getActiveThemeId(): string
+    {
+        $customTheme = Registry::getConfig()->getConfigParam('sCustomTheme');
+        if ($customTheme) {
+            return $customTheme;
+        }
+
+        return Registry::getConfig()->getConfigParam('sTheme');
+    }
+
 }

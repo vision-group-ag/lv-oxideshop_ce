@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SystemRequirements\MissingTemplateBlocksCheckerInterface;
+
 /**
  * Collects System information.
  * Admin Menu: Service -> System Requirements -> Main.
@@ -69,14 +71,12 @@ class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Ad
     /**
      * return missing template blocks
      *
-     * @see \OxidEsales\Eshop\Core\SystemRequirements::getMissingTemplateBlocks
-     *
      * @return array
      */
     public function getMissingTemplateBlocks()
     {
-        $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
-
-        return $oSysReq->getMissingTemplateBlocks();
+        return $this->getContainer()
+            ->get(MissingTemplateBlocksCheckerInterface::class)
+            ->collectMissingTemplateBlockExtensions();
     }
 }

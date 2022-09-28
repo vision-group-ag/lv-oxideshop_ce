@@ -7,14 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtension;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\SystemRequirements\Bridge\SystemSecurityCheckerBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 
 /**
  * System requirements class.
@@ -1012,80 +1008,6 @@ class SystemRequirements
         }
 
         return $sBytes;
-    }
-
-    /**
-     * check if given template contains the given block
-     *
-     * @param string $sTemplate  template file name
-     * @param string $sBlockName block name
-     *
-     * @see getMissingTemplateBlocks
-     *
-     * @return bool
-     */
-    protected function checkTemplateBlock($sTemplate, $sBlockName)
-    {
-        /** @var TemplateLoaderInterface $templateLoader */
-        $templateLoader = $this->getContainer()->get('oxid_esales.templating.frontend.template.loader');
-        if (!$templateLoader->exists($sTemplate)) {
-            $templateLoader = $this->getContainer()->get('oxid_esales.templating.admin.template.loader');
-            if (!$templateLoader->exists($sTemplate)) {
-                return false;
-            }
-        }
-
-        $sFile = $templateLoader->getContext($sTemplate);
-        $sBlockNameQuoted = preg_quote($sBlockName, '/');
-
-        return (bool) preg_match('/\[\{\s*block\s+name\s*=\s*([\'"])' . $sBlockNameQuoted . '\1\s*\}\]/is', $sFile);
-    }
-
-    /**
-     * returns array of missing template block files:
-     *  1. checks db for registered blocks
-     *  2. checks each block if it exists in currently used theme templates
-     * returned array components are of form array(module name, block name, template file)
-     * only active (oxactive==1) blocks are checked
-     *
-     * @return array
-     */
-    public function getMissingTemplateBlocks()
-    {
-        $result = [];
-        $analized = [];
-
-        $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
-        $config = Registry::getConfig();
-
-        $templateBlockExtensions = $this->getContainer()
-            ->get(TemplateBlockExtensionDaoInterface::class)
-            ->getExtensionsByTheme($config->getShopId(), [$activeThemeId]);
-
-        if (count($templateBlockExtensions)) {
-            /** @var TemplateBlockExtension $templateBlockExtension */
-            foreach ($templateBlockExtensions as $templateBlockExtension) {
-                $template = $templateBlockExtension->getExtendedBlockTemplatePath();
-                $blockName = $templateBlockExtension->getName();
-
-                if (isset($analized[$template], $analized[$template][$blockName])) {
-                    $blockExistsInTemplate = $analized[$template][$blockName];
-                } else {
-                    $blockExistsInTemplate = $this->checkTemplateBlock($template, $blockName);
-                    $analized[$template][$blockName] = $blockExistsInTemplate;
-                }
-
-                if (!$blockExistsInTemplate) {
-                    $result[] = [
-                        'module'   => $templateBlockExtension->getModuleId(),
-                        'block'    => $blockName,
-                        'template' => $template,
-                    ];
-                }
-            }
-        }
-
-        return $result;
     }
 
     /**
