@@ -348,33 +348,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return templates affected by template blocks for given module id.
-     *
-     * @todo extract oxtplblocks query to ModuleTemplateBlockRepository
-     *
-     * @param string $sModuleId Module id
-     *
-     * @return array
-     */
-    public function getTemplates($sModuleId = null)
-    {
-        if (is_null($sModuleId)) {
-            $sModuleId = $this->getId();
-        }
-
-        if (!$sModuleId) {
-            return [];
-        }
-
-        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
-
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = :oxmodule AND oxshopid = :oxshopid", [
-            ':oxmodule' => $sModuleId,
-            ':oxshopid' => $sShopId
-        ]);
-    }
-
-    /**
      * Include data from metadata.php
      *
      * @param string $metadataPath Path to metadata.php

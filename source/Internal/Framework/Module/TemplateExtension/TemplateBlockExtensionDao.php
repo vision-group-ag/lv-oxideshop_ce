@@ -97,6 +97,27 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
         return $this->mapDataToObjects($blocksData);
     }
 
+    public function getExtensionsByTheme(int $shopId, array $themeIds = []): array
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder
+            ->select('*')
+            ->from('oxtplblocks')
+            ->where('oxactive = 1')
+            ->andWhere('oxshopid = ' . $queryBuilder->createPositionalParameter(
+                    $shopId,
+                    ParameterType::INTEGER
+                ))
+            ->andWhere('oxtheme in (' . $queryBuilder->createPositionalParameter(
+                    $this->formActiveThemesId($themeIds),
+                    Connection::PARAM_STR_ARRAY
+                ) . ')');
+
+        $blocksData = $queryBuilder->execute()->fetchAll();
+
+        return $this->mapDataToObjects($blocksData);
+    }
+
     public function exists(array $moduleIds, int $shopId): bool
     {
         $queryBuilder = $this->queryBuilderFactory->create();

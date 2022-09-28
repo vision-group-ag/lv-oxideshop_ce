@@ -17,6 +17,8 @@ interface TemplateBlockExtensionDaoInterface
 
     public function getExtensionsByTemplateName(string $templateName, array $moduleIds, int $shopId, array $themeIds = []): array;
 
+    public function getExtensionsByTheme(int $shopId, array $themeIds = []): array;
+
     public function exists(array $moduleIds, int $shopId): bool;
 
     public function deleteExtensions(string $moduleId, int $shopId): void;
