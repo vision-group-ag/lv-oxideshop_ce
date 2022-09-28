@@ -5,6 +5,9 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionServiceInterface;
+
 
 /**
  * Check if this template is registered for block extends. If yes, then collect
@@ -24,7 +27,10 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
     }
     $blDebugTemplateBlocks = (bool)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blDebugTemplateBlocks');
 
-    $aBlocks = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateBlocks($oSmartyCompiler->_current_file);
+    $aBlocks =ContainerFactory::getInstance()
+        ->getContainer()
+        ->get(TemplateBlockExtensionServiceInterface::class)
+        ->getTemplateBlockExtensions(normalizeTemplate($oSmartyCompiler->_current_file));
 
     $iLimit = 500;
 
@@ -45,11 +51,7 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
             $sAppend .= '[{/__smartyblock__}]';
         }
         if ($blDebugTemplateBlocks) {
-            $sTplDir = trim(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('_sTemplateDir'), '/\\');
-            $sFile = str_replace(['\\', '//'], '/', $oSmartyCompiler->_current_file);
-            if (preg_match('@/' . preg_quote($sTplDir, '@') . '/(.*)$@', $sFile, $m)) {
-                $sFile = $m[1];
-            }
+            $sFile = normalizeTemplate($oSmartyCompiler->_current_file);
 
             $sDbgName = $sFile . '-&gt;' . $sBlockName;
             $sPrepend = '[{capture name="_dbg_blocks"}]' . $sPrepend;
@@ -83,4 +85,14 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
         $sSource = str_replace('__smartyblock__', 'block', $sSource);
     }
     return $sSource;
+}
+
+function normalizeTemplate($templateFileName)
+{
+    $tplDir = trim(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('_sTemplateDir'), '/\\');
+    $templateFileName = str_replace(['\\', '//'], '/', $templateFileName);
+    if (preg_match('@/' . preg_quote($tplDir, '@') . '/(.*)$@', $templateFileName, $m)) {
+        $templateFileName = $m[1];
+    }
+    return $templateFileName;
 }

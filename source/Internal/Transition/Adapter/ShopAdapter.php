@@ -164,4 +164,33 @@ class ShopAdapter implements ShopAdapterInterface
         }
         return $this->shopIdCalculator;
     }
+
+    /**
+     * Get active themes list.
+     * Examples:
+     *      if flow theme is active we will get ['flow']
+     *      if azure is extended by some other we will get ['azure', 'extending_theme']
+     *
+     * @return array
+     */
+    public function getActiveThemesList(): array
+    {
+        $config = Registry::getConfig();
+
+        $activeThemeList = [];
+        if (!$config->isAdmin()) {
+            $activeThemeList[] = $config->getConfigParam('sTheme');
+
+            if ($customThemeId = $config->getConfigParam('sCustomTheme')) {
+                $activeThemeList[] = $customThemeId;
+            }
+        }
+
+        return $activeThemeList;
+    }
+
+    public function getCustomTheme(): string
+    {
+        return (string) Registry::getConfig()->getConfigParam('sCustomTheme');
+    }
 }
