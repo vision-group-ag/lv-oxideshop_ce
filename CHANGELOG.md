@@ -33,12 +33,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyCompileCheck()`
   - `OxidEsales\EshopCommunity\Core\Email:_getSmarty()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:getSmarty()`
-  - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
+  - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateBlocks()`
   - `oxfunctions:ox_get_template()`
   - `oxfunctions:ox_get_timestamp()`
   - `oxfunctions:ox_get_secure()`
   - `oxfunctions:ox_get_trusted()`
 - Class:
+  - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
+  - `OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
