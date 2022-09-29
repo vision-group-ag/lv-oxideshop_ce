@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Framework\Module\MetaData;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
@@ -129,8 +128,6 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['templates'],
             $templates
         );
-        $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
-        $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
 
         $moduleSettings = [];
 
@@ -287,8 +284,6 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['templates'],
             $templates
         );
-        $templateBlocks = $this->mapTemplateBlocksForAssertion($moduleConfiguration);
-        $this->assertSame($expectedModuleData['blocks'], $templateBlocks);
 
         $moduleSettings = [];
 
@@ -438,24 +433,5 @@ class MetaDataMapperTest extends TestCase
         $container->compile();
 
         return $container;
-    }
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @return array
-     */
-    private function mapTemplateBlocksForAssertion(ModuleConfiguration $moduleConfiguration): array
-    {
-        $templateBlocks = [];
-        foreach ($moduleConfiguration->getTemplateBlocks() as $key => $templateBlock) {
-            if ($templateBlock->getTheme() !== '') {
-                $templateBlocks[$key]['theme'] = $templateBlock->getTheme();
-            }
-            $templateBlocks[$key]['template'] = $templateBlock->getShopTemplatePath();
-            $templateBlocks[$key]['block'] = $templateBlock->getBlockName();
-            $templateBlocks[$key]['file'] = $templateBlock->getModuleTemplatePath();
-            $templateBlocks[$key]['position'] = $templateBlock->getPosition();
-        }
-        return $templateBlocks;
     }
 }

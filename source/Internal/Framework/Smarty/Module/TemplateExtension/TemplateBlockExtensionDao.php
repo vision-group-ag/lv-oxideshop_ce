@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
@@ -66,13 +66,17 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                 'name'      => $name,
             ]);
 
-        $blocksData = $queryBuilder->execute()->fetchAll();
+        $blocksData = $queryBuilder->execute()->fetchAllAssociative();
 
         return $this->mapDataToObjects($blocksData);
     }
 
-    public function getExtensionsByTemplateName(string $templateName, array $moduleIds, int $shopId, array $themeIds = []): array
-    {
+    public function getExtensionsByTemplateName(
+        string $templateName,
+        array $moduleIds,
+        int $shopId,
+        array $themeIds = []
+    ): array {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->select('*')
@@ -92,7 +96,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                 Connection::PARAM_STR_ARRAY
                 ) . ')');
 
-        $blocksData = $queryBuilder->execute()->fetchAll();
+        $blocksData = $queryBuilder->execute()->fetchAllAssociative();
 
         return $this->mapDataToObjects($blocksData);
     }
@@ -113,7 +117,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                     Connection::PARAM_STR_ARRAY
                 ) . ')');
 
-        $blocksData = $queryBuilder->execute()->fetchAll();
+        $blocksData = $queryBuilder->execute()->fetchAllAssociative();
 
         return $this->mapDataToObjects($blocksData);
     }
@@ -152,10 +156,6 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
         $queryBuilder->execute();
     }
 
-    /**
-     * @param array $blocksData
-     * @return array
-     */
     private function mapDataToObjects(array $blocksData): array
     {
         $templateBlockExtensions = [];
@@ -195,7 +195,6 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
     {
         // if theme is not defined should also be included
         array_unshift($activeThemeIds, '');
-
         return array_values($activeThemeIds);
     }
 }

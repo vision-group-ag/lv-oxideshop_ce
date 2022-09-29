@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
 
 ## [7.0.0-rc.2] - 2022-08-15
 

@@ -7,15 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension;
 
 interface TemplateBlockLoaderInterface
 {
-    /**
-     * @param string $templatePath
-     * @param string $moduleId
-     * @return string
-     * @throws TemplateBlockNotFoundException
-     */
     public function getContent(string $templatePath, string $moduleId): string;
 }

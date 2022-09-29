@@ -28,7 +28,6 @@ class MetaDataProvider implements MetaDataProviderInterface
     public const METADATA_EMAIL = 'email';
     public const METADATA_VERSION = 'version';
     public const METADATA_EXTEND = 'extend';
-    public const METADATA_BLOCKS = 'blocks';
     public const METADATA_CONTROLLERS = 'controllers';
     public const METADATA_EVENTS = 'events';
     public const METADATA_TEMPLATES = 'templates';

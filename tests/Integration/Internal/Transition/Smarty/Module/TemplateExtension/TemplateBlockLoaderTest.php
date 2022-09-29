@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace Integration\Internal\Framework\Module\TemplateExtension;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty\Module\TemplateExtension;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoaderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockNotFoundException;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 

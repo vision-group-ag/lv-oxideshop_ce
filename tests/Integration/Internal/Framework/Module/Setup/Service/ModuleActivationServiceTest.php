@@ -9,15 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolver;
@@ -88,23 +85,6 @@ class ModuleActivationServiceTest extends IntegrationTestCase
         $moduleConfiguration = $moduleConfigurationDao->get($this->testModuleId, $this->shopId);
 
         $this->assertFalse($moduleConfiguration->isActivated());
-    }
-
-    public function testModuleWithThemedBlocksActivation(): void
-    {
-        $expected = 'flow_theme';
-        $moduleConfiguration = $this->getTestModuleConfiguration();
-        $this->persistModuleConfiguration($moduleConfiguration);
-        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
-
-        $moduleActivationService->activate($this->testModuleId, $this->shopId);
-
-        $blockExtension = $this->container->get(TemplateBlockExtensionDaoInterface::class)
-            ->getExtensions('testBlock', $this->shopId);
-        $this->assertSame(
-            $expected,
-            $blockExtension[0]->getThemeId()
-        );
     }
 
     public function testActivationOfModuleServices()
@@ -213,14 +193,6 @@ class ModuleActivationServiceTest extends IntegrationTestCase
             ->setPositionInGroup(7)
             ->setConstraints([1, 2]);
 
-        $templateBlock = new TemplateBlock(
-            'extendedTemplatePath',
-            'testBlock',
-            'filePath'
-        );
-        $templateBlock->setTheme('flow_theme');
-        $templateBlock->setPosition(3);
-
         $moduleConfiguration->addModuleSetting($setting);
 
         $moduleConfiguration
@@ -246,7 +218,6 @@ class ModuleActivationServiceTest extends IntegrationTestCase
                     'SmartyPlugins/directory2'
                 )
             )
-            ->addTemplateBlock($templateBlock)
             ->addClassExtension(
                 new ClassExtension(
                     'originalClassNamespace',

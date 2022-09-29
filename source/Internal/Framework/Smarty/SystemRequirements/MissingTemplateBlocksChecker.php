@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\SystemRequirements;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtension;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -23,7 +23,8 @@ class MissingTemplateBlocksChecker implements MissingTemplateBlocksCheckerInterf
         private TemplateLoaderInterface $adminLoader,
         private TemplateLoaderInterface $frontendLoader,
         private ShopAdapterInterface $shopAdapter
-    ){}
+    ) {
+    }
 
     public function collectMissingTemplateBlockExtensions(): array
     {
@@ -59,16 +60,6 @@ class MissingTemplateBlocksChecker implements MissingTemplateBlocksCheckerInterf
         return $result;
     }
 
-    /**
-     * check if given template contains the given block
-     *
-     * @param string $sTemplate  template file name
-     * @param string $sBlockName block name
-     *
-     * @see getMissingTemplateBlocks
-     *
-     * @return bool
-     */
     protected function checkTemplateBlock(string $sTemplate, string $sBlockName): bool
     {
         $templateLoader = $this->frontendLoader;
@@ -84,5 +75,4 @@ class MissingTemplateBlocksChecker implements MissingTemplateBlocksCheckerInterf
 
         return (bool) preg_match('/\[\{\s*block\s+name\s*=\s*([\'"])' . $sBlockNameQuoted . '\1\s*\}\]/is', $sFile);
     }
-
 }
