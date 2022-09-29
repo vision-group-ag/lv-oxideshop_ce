@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension;
 
 interface TemplateBlockExtensionDaoInterface
 {
@@ -15,7 +15,9 @@ interface TemplateBlockExtensionDaoInterface
 
     public function getExtensions(string $name, int $shopId): array;
 
-    public function getExtensionsByTemplateName(string $templateName, array $moduleIds, int $shopId, array $themeIds = []): array;
+    public function getExtensionsByTemplateName(
+        string $templateName, array $moduleIds, int $shopId, array $themeIds = []
+    ): array;
 
     public function getExtensionsByTheme(int $shopId, array $themeIds = []): array;
 

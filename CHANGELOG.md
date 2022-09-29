@@ -58,6 +58,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
   - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
   - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
 - Property:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 

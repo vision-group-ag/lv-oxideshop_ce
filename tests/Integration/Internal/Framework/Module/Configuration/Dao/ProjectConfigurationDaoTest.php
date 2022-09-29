@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -82,13 +81,6 @@ class ProjectConfigurationDaoTest extends TestCase
 
     private function getTestProjectConfiguration(): ProjectConfiguration
     {
-        $templateBlock = new TemplateBlock(
-            'extendedTemplatePath',
-            'testBlock',
-            'filePath'
-        );
-        $templateBlock->setTheme('flow_theme');
-        $templateBlock->setPosition(3);
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModuleConfiguration')
@@ -131,7 +123,6 @@ class ProjectConfigurationDaoTest extends TestCase
                     'secondSmartyDirectory'
                 )
             )
-            ->addTemplateBlock($templateBlock)
             ->addClassExtension(
                 new ClassExtension(
                     'originalClassNamespace',

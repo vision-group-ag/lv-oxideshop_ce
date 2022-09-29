@@ -9,14 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
@@ -122,23 +120,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                 $moduleConfiguration->addEvent(
                     new Event($action, $method)
                 );
-            }
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_BLOCKS])) {
-            foreach ($moduleData[MetaDataProvider::METADATA_BLOCKS] as $templateBlockData) {
-                $templateBlock = new TemplateBlock(
-                    $templateBlockData[TemplateBlocksMappingKeys::SHOP_TEMPLATE_PATH],
-                    $templateBlockData[TemplateBlocksMappingKeys::BLOCK_NAME],
-                    $templateBlockData[TemplateBlocksMappingKeys::MODULE_TEMPLATE_PATH]
-                );
-                if (isset($templateBlockData[TemplateBlocksMappingKeys::POSITION])) {
-                    $templateBlock->setPosition((int) $templateBlockData[TemplateBlocksMappingKeys::POSITION]);
-                }
-                if (isset($templateBlockData[TemplateBlocksMappingKeys::THEME])) {
-                    $templateBlock->setTheme($templateBlockData[TemplateBlocksMappingKeys::THEME]);
-                }
-                $moduleConfiguration->addTemplateBlock($templateBlock);
             }
         }
 

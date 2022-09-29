@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
@@ -16,16 +16,16 @@ use Psr\Log\LoggerInterface;
 
 class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInterface
 {
-
     private bool $tplBlocksExist;
 
-    public function __construct(private ContextInterface $context,
-                                private ActiveModulesDataProviderInterface $activeModulesDataProvider,
-                                private TemplateBlockExtensionDaoInterface $blockExtensionDao,
-                                private TemplateBlockLoaderInterface $blockLoader,
-                                private LoggerInterface $logger,
-                                private ShopAdapterInterface $shopAdapter
-    ){
+    public function __construct(
+        private ContextInterface $context,
+        private ActiveModulesDataProviderInterface $activeModulesDataProvider,
+        private TemplateBlockExtensionDaoInterface $blockExtensionDao,
+        private TemplateBlockLoaderInterface $blockLoader,
+        private LoggerInterface $logger,
+        private ShopAdapterInterface $shopAdapter
+    ) {
     }
 
     public function getTemplateBlockExtensions(string $templateFileName): array
@@ -42,7 +42,6 @@ class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInte
 
             if ($activeBlockTemplates) {
                 $activeBlockTemplatesByTheme = $this->filterTemplateBlocks($activeBlockTemplates);
-
                 $templateBlocksWithContent = $this->fillTemplateBlockWithContent($activeBlockTemplatesByTheme);
             }
         }
@@ -55,8 +54,6 @@ class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInte
      * To win performance when:
      * - no active modules exists.
      * - none active module overrides template.
-     *
-     * @return bool
      */
     private function isShopTemplateBlockOverriddenByActiveModule(): bool
     {
@@ -68,10 +65,8 @@ class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInte
 
         $activeModulesIds = $this->activeModulesDataProvider->getModuleIds();
         if (count($activeModulesIds)) {
-
             $moduleOverridesTemplate = $this->blockExtensionDao->exists($activeModulesIds, $this->context->getCurrentShopId());
         }
-
         $this->tplBlocksExist = $moduleOverridesTemplate;
 
         return $moduleOverridesTemplate;
@@ -140,10 +135,6 @@ class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInte
      *  OXTHEME = ""
      *  OXFILE = "y"
      *  "content_c_y_default"
-     *
-     * @param array $activeBlockTemplates list of template blocks with all parameters.
-     *
-     * @return array list of blocks with their content.
      */
     private function filterTemplateBlocks(array $activeBlockTemplates): array
     {
@@ -164,10 +155,6 @@ class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInte
 
     /**
      * Form list of blocks which has duplicates for specific theme.
-     *
-     * @param array $activeBlockTemplates
-     *
-     * @return array
      */
     private function formListOfDuplicatedBlocks(array $activeBlockTemplates): array
     {
@@ -190,11 +177,6 @@ class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInte
 
     /**
      * Remove default blocks whose have duplicate for specific theme.
-     *
-     * @param array $activeBlockTemplates
-     * @param array $templateBlocksToExchange
-     *
-     * @return array
      */
     private function removeDefaultBlocks(array $activeBlockTemplates, array $templateBlocksToExchange): array
     {
@@ -214,11 +196,6 @@ class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInte
 
     /**
      * Remove parent theme blocks whose have duplicate for custom theme.
-     *
-     * @param array $templateBlocks
-     * @param array $templateBlocksToExchange
-     *
-     * @return array
      */
     private function removeParentBlocks(array $templateBlocks, array $templateBlocksToExchange): array
     {
@@ -266,10 +243,6 @@ class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInte
      *     1 => "content_b_y_default"
      *   ]
      * ]
-     *
-     * @param array $blockTemplates
-     *
-     * @return array
      */
     private function fillTemplateBlockWithContent(array $blockTemplates): array
     {
@@ -298,14 +271,9 @@ class TemplateBlockExtensionService implements TemplateBlockExtensionServiceInte
     /**
      * Prepare indicator for template block.
      * This indicator might be used to identify same template block for different theme.
-     *
-     * @param TemplateBlockExtension $activeBlockTemplate
-     *
-     * @return string
      */
     private function prepareBlockKey(TemplateBlockExtension $activeBlockTemplate): string
     {
         return $activeBlockTemplate->getExtendedBlockTemplatePath() . $activeBlockTemplate->getName();
     }
-
 }

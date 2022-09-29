@@ -14,8 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\EventsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksDataMapper;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\NodeInterface;
@@ -74,22 +72,6 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                 ->end()
                 ->arrayNode(EventsDataMapper::MAPPING_KEY)
                     ->normalizeKeys(false)->scalarPrototype()->end()
-                ->end()
-                ->arrayNode(TemplateBlocksDataMapper::MAPPING_KEY)
-                    ->normalizeKeys(false)->arrayPrototype()
-                        ->children()
-                            ->scalarNode(TemplateBlocksMappingKeys::BLOCK_NAME)
-                            ->end()
-                            ->scalarNode(TemplateBlocksMappingKeys::POSITION)
-                            ->end()
-                            ->scalarNode(TemplateBlocksMappingKeys::THEME)
-                            ->end()
-                            ->scalarNode(TemplateBlocksMappingKeys::SHOP_TEMPLATE_PATH)
-                            ->end()
-                            ->scalarNode(TemplateBlocksMappingKeys::MODULE_TEMPLATE_PATH)
-                            ->end()
-                        ->end()
-                    ->end()
                 ->end()
                 ->arrayNode(ModuleSettingsDataMapper::MAPPING_KEY)
                     ->normalizeKeys(false)

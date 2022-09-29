@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -23,12 +23,6 @@ class TemplateBlockLoader implements TemplateBlockLoaderInterface
     ) {
     }
 
-    /**
-     * @param string $templatePath
-     * @param string $moduleId
-     * @return string
-     * @throws TemplateBlockNotFoundException
-     */
     public function getContent(string $templatePath, string $moduleId): string
     {
         $fullTemplatePath = $this->getAbsoluteTemplatePath($templatePath, $moduleId);

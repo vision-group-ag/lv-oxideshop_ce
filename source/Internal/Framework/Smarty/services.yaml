@@ -54,8 +54,31 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SystemRequirements\MissingTemplateBlocksChecker
     public: true
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockExtensionDaoInterface'
       - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
       - '@oxid_esales.templating.admin.template.loader'
       - '@oxid_esales.templating.frontend.template.loader'
       - '@OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockExtensionDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockExtensionDao
+
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockExtensionServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockExtensionService
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoader
+    arguments:
+      $filesystem: '@oxid_esales.symfony.file_system'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\Handler\ModuleConfigurationHandlerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\Handler\TemplateBlockModuleSettingHandler
+
+  oxid_esales.smarty.setup.eventsubscriber.install_smarty_extension_events_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\EventSubscriber\InstallSmartyExtensionEventsSubscriber
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\MetaData\MetaDataDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\MetaData\MetaDataDao

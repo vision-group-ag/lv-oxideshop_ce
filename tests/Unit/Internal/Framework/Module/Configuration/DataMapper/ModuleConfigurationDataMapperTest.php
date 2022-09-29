@@ -109,24 +109,6 @@ class ModuleConfigurationDataMapperTest extends TestCase
             ],
             [
                 'data' => [
-                    TemplateBlocksDataMapper::MAPPING_KEY => [
-                        [
-                            'template' => 'page/checkout/basket.tpl',
-                            'block' => 'basket_btn_next_top',
-                            'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'
-                        ],
-                        [
-                            'template' => 'page/checkout/basket.tpl',
-                            'block' => 'basket_btn_next_bottom',
-                            'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'
-                        ],
-                    ]
-                ],
-                'dataMapper' => new TemplateBlocksDataMapper()
-
-            ],
-            [
-                'data' => [
                     TemplatesDataMapper::MAPPING_KEY => [
                             'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
                             'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl'
