@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleSettingNotFountException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
@@ -83,11 +82,6 @@ class ModuleConfiguration
      * @var Controller[]
      */
     private $controllers = [];
-
-    /**
-     * @var SmartyPluginDirectory[]
-     */
-    private $smartyPluginDirectories = [];
 
     /**
      * @var Event[]
@@ -428,34 +422,6 @@ class ModuleConfiguration
     public function hasControllers(): bool
     {
         return !empty($this->controllers);
-    }
-
-    /**
-     * @param SmartyPluginDirectory $directory
-     *
-     * @return $this
-     */
-    public function addSmartyPluginDirectory(SmartyPluginDirectory $directory)
-    {
-        $this->smartyPluginDirectories[] = $directory;
-
-        return $this;
-    }
-
-    /**
-     * @return SmartyPluginDirectory[]
-     */
-    public function getSmartyPluginDirectories(): array
-    {
-        return $this->smartyPluginDirectories;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasSmartyPluginDirectories(): bool
-    {
-        return !empty($this->smartyPluginDirectories);
     }
 
     /**

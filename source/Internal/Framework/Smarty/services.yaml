@@ -43,13 +43,17 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\SmartyDefaultTemplateHandler
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\ResourcePluginInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\CacheResourcePlugin
-  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\ModuleSmartyPluginsDataProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\ModuleSmartyPluginsDataProvider
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Plugin\SmartyPluginDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Plugin\SmartyPluginDao
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Plugin\ModuleSmartyPluginsDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Plugin\ModuleSmartyPluginsDataProvider
     decorates: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPluginsDataProviderInterface
     decoration_priority: 100
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\ModuleSmartyPluginsDataProviderInterface.inner'
-      - '@OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Plugin\ModuleSmartyPluginsDataProviderInterface.inner'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Plugin\SmartyPluginDaoInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface'
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\SystemRequirements\MissingTemplateBlocksCheckerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SystemRequirements\MissingTemplateBlocksChecker
     public: true
@@ -72,11 +76,21 @@ services:
     arguments:
       $filesystem: '@oxid_esales.symfony.file_system'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\Handler\ModuleConfigurationHandlerInterface:
+  oxid_esales.smarty.module.setup.template_block_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\Handler\TemplateBlockModuleSettingHandler
+
+  oxid_esales.smarty.module.setup.smarty_plugin_directories_module_setting_handler:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\Handler\ShopConfigurationSmartyPluginDirectoryHandler
+
+  OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\Validator\SmartyPluginDirectoriesValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\Validator\SmartyPluginDirectoriesValidator
 
   oxid_esales.smarty.setup.eventsubscriber.install_smarty_extension_events_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\EventSubscriber\InstallSmartyExtensionEventsSubscriber
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface'
+      - '@oxid_esales.smarty.module.setup.template_block_module_setting_handler'
+      - '@oxid_esales.smarty.module.setup.smarty_plugin_directories_module_setting_handler'
     tags:
       - { name: kernel.event_subscriber }
 

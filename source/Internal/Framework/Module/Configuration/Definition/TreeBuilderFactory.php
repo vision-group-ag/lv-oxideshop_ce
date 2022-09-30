@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ControllersDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\EventsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\NodeInterface;
@@ -65,9 +64,6 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                     ->normalizeKeys(false)->variablePrototype()->end()
                 ->end()
                 ->arrayNode(ControllersDataMapper::MAPPING_KEY)
-                    ->normalizeKeys(false)->scalarPrototype()->end()
-                ->end()
-                ->arrayNode(SmartyPluginDirectoriesDataMapper::MAPPING_KEY)
                     ->normalizeKeys(false)->scalarPrototype()->end()
                 ->end()
                 ->arrayNode(EventsDataMapper::MAPPING_KEY)

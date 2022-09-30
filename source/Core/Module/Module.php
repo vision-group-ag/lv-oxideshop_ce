@@ -180,18 +180,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @return array
-     */
-    public function getSmartyPluginDirectories()
-    {
-        if (isset($this->_aModule['smartyPluginDirectories']) && !is_array($this->_aModule['smartyPluginDirectories'])) {
-            throw new \InvalidArgumentException('Value for metadata key "smartyPluginDirectories" must be an array');
-        }
-
-        return isset($this->_aModule['smartyPluginDirectories']) ? $this->_aModule['smartyPluginDirectories'] : [];
-    }
-
-    /**
      * Get module ID
      *
      * @param string $module extension full path
@@ -426,8 +414,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data[MetaDataProvider::METADATA_EXTEND] = $this->convertClassExtensionsToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_TEMPLATES] = $this->convertTemplatesToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
-        $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] =
-            $this->convertSmartyPluginDirectoriesToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_SETTINGS] = $this->convertSettingsToArray($moduleConfiguration);
 
@@ -465,22 +451,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
             } else {
                 $data[$template->getTemplateKey()] = $template->getTemplatePath();
             }
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
-    private function convertSmartyPluginDirectoriesToArray(ModuleConfiguration $moduleConfiguration): array
-    {
-        $data = [];
-
-        foreach ($moduleConfiguration->getSmartyPluginDirectories() as $directory) {
-            $data[] = $directory->getDirectory();
         }
 
         return $data;

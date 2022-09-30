@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -114,15 +113,6 @@ class ProjectConfigurationDaoTest extends TestCase
             )
             ->addTemplate(new Template('originalTemplate', 'moduleTemplate'))
             ->addTemplate(new Template('otherOriginalTemplate', 'moduleTemplate'))
-            ->addSmartyPluginDirectory(
-                new SmartyPluginDirectory(
-                    'firstSmartyDirectory'
-                )
-            )->addSmartyPluginDirectory(
-                new SmartyPluginDirectory(
-                    'secondSmartyDirectory'
-                )
-            )
             ->addClassExtension(
                 new ClassExtension(
                     'originalClassNamespace',

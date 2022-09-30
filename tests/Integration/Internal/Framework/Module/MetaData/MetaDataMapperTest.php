@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Framework\Module\MetaData;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
@@ -326,17 +326,6 @@ class MetaDataMapperTest extends TestCase
             $expectedModuleData['events'],
             $events
         );
-
-        $smartyPluginDirectories = [];
-
-        foreach ($moduleConfiguration->getSmartyPluginDirectories() as $directory) {
-            $smartyPluginDirectories[] = $directory->getDirectory();
-        }
-
-        $this->assertSame(
-            $expectedModuleData['smartyPluginDirectories'],
-            $smartyPluginDirectories
-        );
     }
 
     /**
@@ -419,9 +408,7 @@ class MetaDataMapperTest extends TestCase
      */
     private function getMetaDataFilePath(string $testModuleDirectory): string
     {
-        $metaDataFilePath = Path::join(__DIR__, 'TestData', $testModuleDirectory, 'metadata.php');
-
-        return $metaDataFilePath;
+        return Path::join(__DIR__, 'TestData', $testModuleDirectory, 'metadata.php');
     }
 
     /**

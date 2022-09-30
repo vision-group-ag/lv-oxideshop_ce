@@ -3141,16 +3141,4 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories'                 => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
-    'OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository'         => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
 ];

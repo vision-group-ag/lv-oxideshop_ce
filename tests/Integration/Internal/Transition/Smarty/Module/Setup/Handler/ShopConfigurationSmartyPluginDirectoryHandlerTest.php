@@ -11,10 +11,11 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Plugin\SmartyPluginDaoInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class TemplateBlockModuleSettingHandlerTest extends IntegrationTestCase
+/** @internal */
+final class ShopConfigurationSmartyPluginDirectoryHandlerTest extends IntegrationTestCase
 {
     public function setup(): void
     {
@@ -26,41 +27,41 @@ final class TemplateBlockModuleSettingHandlerTest extends IntegrationTestCase
         $configurationInstaller->install($modulePath);
     }
 
-    public function testHandlingOnModuleActivation(): void
+    public function testHandleOnModuleActivationWillSaveMergedConfig(): void
     {
         $configurationDao = $this->get(ModuleConfigurationDaoInterface::class);
         $moduleConfiguration = $configurationDao->get('test-module', 1);
 
-        $settingHandler = $this->get('oxid_esales.smarty.module.setup.template_block_module_setting_handler');
+        $settingHandler = $this->get('oxid_esales.smarty.module.setup.smarty_plugin_directories_module_setting_handler');
         $settingHandler->handleOnModuleActivation(
             $moduleConfiguration,
             1
         );
-        $templateBlockDao = $this->get(TemplateBlockExtensionDaoInterface::class);
-        $this->assertTrue($templateBlockDao->exists(['test-module'], 1));
-        $this->assertSame(1, count($templateBlockDao->getExtensionsByTemplateName('template_1.tpl',['test-module'], 1, ['theme_id'])));
-        $this->assertSame(1, count($templateBlockDao->getExtensionsByTemplateName('template_2.tpl',['test-module'], 1)));
+
+        $smartyPluginDao = $this->get(SmartyPluginDaoInterface::class);
+        $this->assertSame(['test-module' => [
+            'SmartyPlugins/directory1',
+            'SmartyPlugins/directory2',
+        ]], $smartyPluginDao->getPluginDirectories(1));
     }
 
-    public function testHandlingOnModuleDeactivation(): void
+    public function testHandleOnModuleDeactivation(): void
     {
         $configurationDao = $this->get(ModuleConfigurationDaoInterface::class);
         $moduleConfiguration = $configurationDao->get('test-module', 1);
 
-        $settingHandler = $this->get('oxid_esales.smarty.module.setup.template_block_module_setting_handler');
+        $settingHandler = $this->get('oxid_esales.smarty.module.setup.smarty_plugin_directories_module_setting_handler');
         $settingHandler->handleOnModuleActivation(
             $moduleConfiguration,
             1
         );
-
-        $templateBlockDao = $this->get(TemplateBlockExtensionDaoInterface::class);
-        $this->assertTrue($templateBlockDao->exists(['test-module'], 1));
 
         $settingHandler->handleOnModuleDeactivation(
             $moduleConfiguration,
             1
         );
-        $templateBlockDao = $this->get(TemplateBlockExtensionDaoInterface::class);
-        $this->assertFalse($templateBlockDao->exists(['test-module'], 1));
+
+        $smartyPluginDao = $this->get(SmartyPluginDaoInterface::class);
+        $this->assertSame([], $smartyPluginDao->getPluginDirectories(1));
     }
 }
