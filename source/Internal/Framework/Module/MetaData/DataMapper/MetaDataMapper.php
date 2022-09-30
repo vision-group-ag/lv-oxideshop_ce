@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
@@ -30,7 +29,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
      * @param array $metaData
      *
      * @return ModuleConfiguration
-     * @throws UnsupportedMetaDataValueTypeException
      */
     public function fromData(array $metaData): ModuleConfiguration
     {
@@ -59,9 +57,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             $moduleConfiguration->setTitle($moduleData[MetaDataProvider::METADATA_TITLE]);
         }
 
-        $moduleConfiguration = $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);
-
-        return $moduleConfiguration;
+        return $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);;
     }
 
     /**
@@ -103,14 +99,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             foreach ($moduleData[MetaDataProvider::METADATA_CONTROLLERS] as $id => $controllerClassNameSpace) {
                 $moduleConfiguration->addController(
                     new Controller($id, $controllerClassNameSpace)
-                );
-            }
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES])) {
-            foreach ($moduleData[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] as $directory) {
-                $moduleConfiguration->addSmartyPluginDirectory(
-                    new SmartyPluginDirectory($directory)
                 );
             }
         }

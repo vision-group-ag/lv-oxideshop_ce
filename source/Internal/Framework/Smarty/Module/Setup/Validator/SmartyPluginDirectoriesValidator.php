@@ -7,52 +7,31 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotExistentException;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotReadableException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
-    ModuleConfiguration\SmartyPluginDirectoriesDataMapper
-};
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
 
-class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorInterface
+class SmartyPluginDirectoriesValidator implements SmartyPluginDirectoriesValidatorInterface
 {
     public function __construct(private ModulePathResolverInterface $modulePathResolver)
     {
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     *
-     * @throws DirectoryNotExistentException
-     * @throws DirectoryNotReadableException
-     * @throws ModuleSettingNotValidException
-     */
-    public function validate(ModuleConfiguration $configuration, int $shopId)
+    public function validate(array $directories, string $moduleId, int $shopId): void
     {
-        if ($configuration->hasSmartyPluginDirectories()) {
-            $directories = [];
-
-            foreach ($configuration->getSmartyPluginDirectories() as $directory) {
-                $directories[] = $directory->getDirectory();
-            }
-
             if ($this->isEmptyArray($directories)) {
                 throw new ModuleSettingNotValidException(
                     'Module setting ' .
-                    SmartyPluginDirectoriesDataMapper::MAPPING_KEY .
-                    ' must be of type array but ' .
-                    gettype($directories[0]) .
-                    ' given'
+                     'smartyPluginDirectories' .
+                    ' must be not empty'
                 );
             }
 
             $fullPathToModule = $this->modulePathResolver->getFullModulePathFromConfiguration(
-                $configuration->getId(),
+                $moduleId,
                 $shopId
             );
 
@@ -69,14 +48,8 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
                     );
                 }
             }
-        }
     }
 
-    /**
-     * @param array $directories
-     *
-     * @return bool
-     */
     private function isEmptyArray(array $directories): bool
     {
         return count($directories) === 1 && $directories[0] === '';

@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 - Method:
+  - `OxidEsales\EshopCommunity\Core\Module\Module:getSmartyPluginDirectories()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateCompileId()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
   - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
@@ -41,12 +42,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxfunctions:ox_get_trusted()`
 - Class:
   - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
-  - `OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository`
-  - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
-  - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
-  - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
+  - `OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository`
+  - `OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository`
+  - `OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos`
+  - `OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosAdapter`
+  - `OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosItem`
   - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
   - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration/SmartyPluginDirectoriesDataMapper`
+  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration/SmartyPluginDirectory`
 
 ## [7.0.0-rc.2] - 2022-08-15
 

@@ -28,7 +28,6 @@ use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -209,15 +208,6 @@ class ModuleActivationServiceTest extends IntegrationTestCase
             )
             ->addTemplate(new Template('originalTemplate', 'moduleTemplate'))
             ->addTemplate(new Template('otherOriginalTemplate', 'moduleTemplate'))
-            ->addSmartyPluginDirectory(
-                new SmartyPluginDirectory(
-                    'SmartyPlugins/directory1'
-                )
-            )->addSmartyPluginDirectory(
-                new SmartyPluginDirectory(
-                    'SmartyPlugins/directory2'
-                )
-            )
             ->addClassExtension(
                 new ClassExtension(
                     'originalClassNamespace',
