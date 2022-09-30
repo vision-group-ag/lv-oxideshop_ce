@@ -10,9 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Application\Model\Actions::getLongDesc`
 - `OxidEsales\EshopCommunity\Application\Model\Article::getLongDesc`
 - `OxidEsales\EshopCommunity\Application\Model\Category::getLongDesc`
-- `OxidEsales\EshopCommunity\Application\Model\UtilsView::getTemplateCompileId`
-- `OxidEsales\EshopCommunity\Application\Model\UtilsView::getRenderedContent`
+- `OxidEsales\EshopCommunity\Core\UtilsView::getTemplateCompileId`
+- `OxidEsales\EshopCommunity\Core\UtilsView::getRenderedContent`
+- `OxidEsales\EshopCommunity\Core\UtilsView::getTemplateBlocks`
 - `OxidEsales\EshopCommunity\Core\UtilsView::getSmartyDir`
+- `OxidEsales\EshopCommunity\Core\Module\Module:getSmartyPluginDirectories`
+- `OxidEsales\EshopCommunity\Core\SystemRequirements::getMissingTemplateBlocks`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setActive`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface::setDeactivated`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::isConfigured`
@@ -21,6 +24,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ClassExtensionChainBridge`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainServiceInterface`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainService`
+- `OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository`
+- `OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
 - Constants:
 - `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting`
   - `MODULE_CLASS_EXTENSIONS`
