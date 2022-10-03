@@ -64,5 +64,9 @@ interface ShopAdapterInterface
      */
     public function validateShopId(int $shopId): bool;
 
-    public function getModuleSmartyPluginDirectories(): array;
+    public function getActiveThemesList(): array;
+
+    public function getCustomTheme(): string;
+
+    public function getActiveThemeId(): string;
 }

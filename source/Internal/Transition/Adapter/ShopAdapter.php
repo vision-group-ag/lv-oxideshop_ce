@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter;
 
-use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
@@ -125,43 +124,43 @@ class ShopAdapter implements ShopAdapterInterface
         return $shopModel->isLoaded();
     }
 
-    public function getModuleSmartyPluginDirectories(): array
+    /**
+     * Get active themes list.
+     * Examples:
+     *      if flow theme is active we will get ['flow']
+     *      if azure is extended by some other we will get ['azure', 'extending_theme']
+     *
+     * @return array
+     */
+    public function getActiveThemesList(): array
     {
-        $moduleSmartyPluginDirectoryRepository = $this->getSmartyPluginDirectoryRepository();
-        $moduleSmartyPluginDirectories = $moduleSmartyPluginDirectoryRepository->get();
+        $config = Registry::getConfig();
 
-        return $moduleSmartyPluginDirectories->getWithFullPath();
-    }
+        $activeThemeList = [];
+        if (!$config->isAdmin()) {
+            $activeThemeList[] = $config->getConfigParam('sTheme');
 
-    private function getSmartyPluginDirectoryRepository(): ModuleSmartyPluginDirectoryRepository
-    {
-        $subShopSpecificCache = oxNew(
-            \OxidEsales\Eshop\Core\SubShopSpecificFileCache::class,
-            $this->getShopIdCalculator()
-        );
-
-        $moduleVariablesLocator = oxNew(
-            ModuleVariablesLocator::class,
-            $subShopSpecificCache,
-            $this->getShopIdCalculator()
-        );
-
-        return oxNew(
-            ModuleSmartyPluginDirectoryRepository::class,
-            $moduleVariablesLocator
-        );
-    }
-
-    private function getShopIdCalculator(): EshopShopIdCalculator
-    {
-        if (is_null($this->shopIdCalculator)) {
-            $moduleVariablesCache = oxNew(\OxidEsales\Eshop\Core\FileCache::class);
-
-            $this->shopIdCalculator = oxNew(
-                EshopShopIdCalculator::class,
-                $moduleVariablesCache
-            );
+            if ($customThemeId = $config->getConfigParam('sCustomTheme')) {
+                $activeThemeList[] = $customThemeId;
+            }
         }
-        return $this->shopIdCalculator;
+
+        return $activeThemeList;
     }
+
+    public function getCustomTheme(): string
+    {
+        return (string) Registry::getConfig()->getConfigParam('sCustomTheme');
+    }
+
+    public function getActiveThemeId(): string
+    {
+        $customTheme = Registry::getConfig()->getConfigParam('sCustomTheme');
+        if ($customTheme) {
+            return $customTheme;
+        }
+
+        return Registry::getConfig()->getConfigParam('sTheme');
+    }
+
 }

@@ -2751,12 +2751,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => true
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository'                 => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Module\ModuleVariablesLocator'                        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,
         'isAbstract'       => false,
@@ -3146,17 +3140,5 @@ return [
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories'                 => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectories::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
-    'OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository'         => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
     ],
 ];

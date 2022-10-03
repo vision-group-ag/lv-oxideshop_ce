@@ -12,9 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleSettingNotFountException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 
@@ -83,16 +81,6 @@ class ModuleConfiguration
      * @var Controller[]
      */
     private $controllers = [];
-
-    /**
-     * @var SmartyPluginDirectory[]
-     */
-    private $smartyPluginDirectories = [];
-
-    /**
-     * @var TemplateBlock[]
-     */
-    private $templateBlocks = [];
 
     /**
      * @var Event[]
@@ -348,29 +336,6 @@ class ModuleConfiguration
     }
 
     /**
-     * @return TemplateBlock[]
-     */
-    public function getTemplateBlocks(): array
-    {
-        return $this->templateBlocks;
-    }
-
-    public function addTemplateBlock(TemplateBlock $templateBlock)
-    {
-        $this->templateBlocks[] = $templateBlock;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasTemplateBlocks(): bool
-    {
-        return !empty($this->templateBlocks);
-    }
-
-    /**
      * @return Template[]
      */
     public function getTemplates(): array
@@ -451,34 +416,6 @@ class ModuleConfiguration
     public function hasControllers(): bool
     {
         return !empty($this->controllers);
-    }
-
-    /**
-     * @param SmartyPluginDirectory $directory
-     *
-     * @return $this
-     */
-    public function addSmartyPluginDirectory(SmartyPluginDirectory $directory)
-    {
-        $this->smartyPluginDirectories[] = $directory;
-
-        return $this;
-    }
-
-    /**
-     * @return SmartyPluginDirectory[]
-     */
-    public function getSmartyPluginDirectories(): array
-    {
-        return $this->smartyPluginDirectories;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasSmartyPluginDirectories(): bool
-    {
-        return !empty($this->smartyPluginDirectories);
     }
 
     /**
