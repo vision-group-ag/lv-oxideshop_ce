@@ -75,6 +75,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     public function cancelOrder()
     {
         $order = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
+        var_dump($this->getEditObjectId(), $order->load($this->getEditObjectId()));
         if ($order->load($this->getEditObjectId())) {
             $order->cancelOrder();
         }

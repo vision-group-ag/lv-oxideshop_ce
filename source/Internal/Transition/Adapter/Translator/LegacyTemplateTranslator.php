@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator;
 
 use OxidEsales\Eshop\Core\Language;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\TranslationNotFoundException;
 
 class LegacyTemplateTranslator implements TranslatorInterface
@@ -18,7 +19,6 @@ class LegacyTemplateTranslator implements TranslatorInterface
     /**
      * @param string $string
      * @return string
-     * @throws TranslationNotFoundException
      */
     public function translate(string $string): string
     {
@@ -27,7 +27,10 @@ class LegacyTemplateTranslator implements TranslatorInterface
         $translation = $this->language->translateString($string, $tplLang, $isAdmin);
 
         if (!$this->language->isTranslated()) {
-            throw new TranslationNotFoundException();
+            Registry::getLogger()->warning(
+                "translation for $string not found",
+                compact('tplLang', 'isAdmin')
+            );
         }
 
         return $translation;

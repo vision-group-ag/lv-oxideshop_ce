@@ -13,7 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Internal\Transition\Utility\BasicContextInterface::getTemplateCacheDirectory()`
 ### Removed
 - Service:
-- `oxid_esales.command.apply_modules_configuration_command`
+  - `oxid_esales.command.apply_modules_configuration_command`
+  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
+  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
+  - `Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
 - Command:
 - `ApplyModulesConfigurationCommand` moved to another repository
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
@@ -73,6 +77,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Shop configuration files structure
 - Change `BaseModel::assignRecord()` function visibility form public to protected 
+
+### Deprecated
+- Methods
+  - `Internal\Framework\Templating\TemplateRendererBridgeInterface::setEngine()`
+  - `Internal\Framework\Templating\TemplateRendererBridgeInterface::getEngine()`
 
 ## [7.0.0-rc.2] - 2022-08-15
 
