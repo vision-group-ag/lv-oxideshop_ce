@@ -107,14 +107,6 @@ class ShopAdapter implements ShopAdapterInterface
     }
 
     /**
-     * @return \Smarty
-     */
-    public function getSmartyInstance(): \Smarty
-    {
-        return Registry::getUtilsView()->getSmarty();
-    }
-
-    /**
      * @return bool
      */
     public function validateShopId(int $shopId): bool

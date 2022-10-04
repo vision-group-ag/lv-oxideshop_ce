@@ -12,68 +12,52 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - Service:
-- `oxid_esales.command.apply_modules_configuration_command`
+  - `oxid_esales.command.apply_modules_configuration_command`
+  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
+  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
+  - `Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
 - Command:
 - `ApplyModulesConfigurationCommand` moved to another repository
 - Class:
   - `Internal\Framework\Module\Setup\Exception\ModuleSetupException`
-  - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
-  - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
-  - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
+  - `Core\Module\ModuleTemplateBlockRepository`
+  - `Core\Module\ModuleSmartyPluginDirectoryRepository`
+  - `Application\Model\SmartyRenderer`
+  - `Core\Smarty\Plugin\EmosAdapter`
+  - `Core\Smarty\Plugin\EmosItem`
+  - `Core\Smarty\Plugin\Emos`
+
 - Methods:
   - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
-  - `Application\Model\SmartyRenderer`
-  - `Core\Email:_getSmarty()`
+  - `Core\Email::_getSmarty()`
+  - `Core\SystemRequirements::getMissingTemplateBlocks`
   - `Core\Utils::resetTemplateCache()`
+  - `Core\UtilsView::_fillCommonSmartyProperties()`
+  - `Core\UtilsView::_smartyCompileCheck()`
+  - `Core\UtilsView::_smartyDefaultTemplateHandler()`
+  - `Core\UtilsView::getShopSmartyPluginDirectories()`
+  - `Core\UtilsView::getSmarty()`
   - `Core\UtilsView::getSmartyDir()`
-  - `Core\UtilsView:_fillCommonSmartyProperties()`
-  - `Core\UtilsView:_smartyCompileCheck()`
-  - `Core\UtilsView:_smartyDefaultTemplateHandler()`
-  - `Core\UtilsView:getShopSmartyPluginDirectories()`
-  - `Core\UtilsView:getSmarty()`
-  - `Core\UtilsView:getSmartyPluginDirectories()`
-  - `Core\UtilsView:getTemplateCompileId()`
-  - `Core\UtilsView:parseThroughSmarty()`
-  - `oxfunctions:ox_get_secure()`
-
+  - `Core\UtilsView::getSmartyPluginDirectories()`
+  - `Core\UtilsView:getTemplateBlocks()`
+  - `Core\UtilsView::getTemplateCompileId()`
+  - `Core\UtilsView::parseThroughSmarty()`
+  - `Internal\Transition\Adapter\ShopAdapterInterface::getSmartyInstance()`
+  - `oxfunctions::ox_get_template()`
+  - `oxfunctions::ox_get_timestamp()`
+  - `oxfunctions::ox_get_secure()`
+  - `oxfunctions::ox_get_trusted()`
+- Property:
+  - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
+  
 ### Fixed
 - Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
 
-### Removed
-
-- Method:
-  - `OxidEsales\EshopCommunity\Core\Module\Module:getSmartyPluginDirectories()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateCompileId()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getSmartyPluginDirectories()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getShopSmartyPluginDirectories()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:_fillCommonSmartyProperties()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyCompileCheck()`
-  - `OxidEsales\EshopCommunity\Core\Email:_getSmarty()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getSmarty()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateBlocks()`
-  - `OxidEsales\EshopCommunity\Core\SystemRequirements::getMissingTemplateBlocks`
-  - `oxfunctions:ox_get_template()`
-  - `oxfunctions:ox_get_timestamp()`
-  - `oxfunctions:ox_get_secure()`
-  - `oxfunctions:ox_get_trusted()`
-- Property:
-  - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
-
-### Fixed
-- Partly revert `Core\Autoload\ModuleAutoload`
-- Class:
-  - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
-  - `OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository`
-  - `OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository`
-  - `OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos`
-  - `OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosAdapter`
-  - `OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosItem`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration/SmartyPluginDirectoriesDataMapper`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration/SmartyPluginDirectory`
+### Deprecated
+- Methods
+  - `Internal\Framework\Templating\TemplateRendererBridgeInterface::setEngine()`
+  - `Internal\Framework\Templating\TemplateRendererBridgeInterface::getEngine()`
 
 ## [7.0.0-rc.2] - 2022-08-15
 

@@ -13,6 +13,13 @@ services:
     public: true
     tags: ['templating']
 
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridge
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngine
+
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolver
     arguments:
