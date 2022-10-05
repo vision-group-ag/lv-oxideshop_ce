@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\TranslationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\TranslatorInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -42,7 +43,6 @@ class TranslateFunctionLogic
      */
     public function getTranslation(array $params): string
     {
-        startProfile('smarty_function_oxmultilang');
         $ident = $params['ident'] ?? 'IDENT MISSING';
         $args = $params['args'] ?? false;
         $suffix = $params['suffix'] ?? 'NO_SUFFIX';
@@ -60,6 +60,7 @@ class TranslateFunctionLogic
         } catch (StandardException) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
+
         if (!$translationFound && isset($params['alternative'])) {
             $translation = $params['alternative'];
             $translationFound = true;
@@ -75,8 +76,11 @@ class TranslateFunctionLogic
                 $ident,
                 $this->isTranslatableSuffix($suffixTranslation) ? $suffixTranslation : ''
             );
+        } else {
+            Registry::getLogger()->warning(
+                "translation for $ident not found"
+            );
         }
-        stopProfile('smarty_function_oxmultilang');
 
         return $translation;
     }

@@ -1046,8 +1046,7 @@ class Email extends PHPMailer
 
             $this->setRecipient($shop->oxshops__oxowneremail->value, $shop->oxshops__oxname->getRawValue());
             $this->setFrom($shop->oxshops__oxowneremail->value, $shop->oxshops__oxname->getRawValue());
-            $templateLoader = $this->getContainer()->get('oxid_esales.templating.frontend.template.loader');
-            $this->setBody($renderer->renderTemplate($templateLoader->findTemplate($this->_sReminderMailTemplate), $this->getViewData()));
+            $this->setBody($renderer->renderTemplate($this->_sReminderMailTemplate, $this->getViewData()));
             $this->setAltBody("");
             $this->setSubject(($subject !== null) ? $subject : $lang->translateString('STOCK_LOW'));
 

@@ -332,7 +332,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         return parent::prepareMetaDescription($meta, $length, $descriptionTag);
     }
 
-    private function prepareLongDescription(Article $article): string
+    private function prepareLongDescription(Article $article)
     {
         if (Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty') && $article->getLongDescription()->getRawValue()) {
             $activeLanguageId = Registry::getLang()->getTplLanguage();

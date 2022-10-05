@@ -12,7 +12,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
     public: true
-    tags: ['templating']
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridge
