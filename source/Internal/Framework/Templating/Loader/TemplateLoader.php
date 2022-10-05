@@ -22,23 +22,6 @@ class TemplateLoader implements TemplateLoaderInterface
     }
 
     /**
-     * Check a template exists.
-     *
-     * @param string $name The name of the template
-     *
-     * @return bool
-     */
-    public function exists($name): bool
-    {
-        try {
-            $this->findTemplate($name);
-        } catch (TemplateFileNotFoundException) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Returns the content of the given template.
      *
      * @param string $name The name of the template

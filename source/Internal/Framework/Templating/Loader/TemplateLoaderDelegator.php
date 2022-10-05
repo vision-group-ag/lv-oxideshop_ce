@@ -45,11 +45,6 @@ class TemplateLoaderDelegator implements TemplateLoaderInterface
         $this->frontendLoader = $frontendLoader;
     }
 
-    public function exists($name): bool
-    {
-        return $this->getLoader()->exists($name);
-    }
-
     public function getContext($name): string
     {
         return $this->getLoader()->getContext($name);

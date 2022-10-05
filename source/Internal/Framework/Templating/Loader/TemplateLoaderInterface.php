@@ -16,15 +16,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader;
 interface TemplateLoaderInterface
 {
     /**
-     * Check a template exists.
-     *
-     * @param string $name The name of the template
-     *
-     * @return bool
-     */
-    public function exists($name): bool;
-
-    /**
      * Returns the content of the given template.
      *
      * @param string $name The name of the template

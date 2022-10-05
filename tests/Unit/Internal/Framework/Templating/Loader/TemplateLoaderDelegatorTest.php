@@ -31,7 +31,6 @@ final class TemplateLoaderDelegatorTest extends TestCase
         );
 
         $this->assertEquals('frontend_content', $delegator->getContext('front_template'));
-        $this->assertTrue($delegator->exists('front_template'));
     }
 
     public function testIfAdmin(): void
@@ -46,14 +45,12 @@ final class TemplateLoaderDelegatorTest extends TestCase
         );
 
         $this->assertEquals('admin_content', $delegator->getContext('admin_template'));
-        $this->assertTrue($delegator->exists('admin_template'));
     }
 
     private function getFrontendLoader(): TemplateLoaderInterface
     {
         $frontendLoader = $this->prophesize(TemplateLoaderInterface::class);
         $frontendLoader->getContext('front_template')->willReturn('frontend_content');
-        $frontendLoader->exists('front_template')->willReturn(true);
 
         return $frontendLoader->reveal();
     }
@@ -62,7 +59,6 @@ final class TemplateLoaderDelegatorTest extends TestCase
     {
         $adminLoader = $this->prophesize(TemplateLoaderInterface::class);
         $adminLoader->getContext('admin_template')->willReturn('admin_content');
-        $adminLoader->exists('admin_template')->willReturn(true);
 
         return $adminLoader->reveal();
     }

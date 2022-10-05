@@ -17,27 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 class TemplateLoaderTest extends TestCase
 {
-    public function testExists(): void
-    {
-        $name = 'test_template.tpl';
-        $locator = $this->getFileLocatorMock($name);
-        $templateFileResolverMock = $this->getTemplateFileResolverMock($name);
-        $loader = new TemplateLoader($locator, $templateFileResolverMock);
-
-        $this->assertTrue($loader->exists($name));
-    }
-
-    public function testIfTemplateDoNotExists(): void
-    {
-        $name = 'not_existing_template.tpl';
-        $locator = $this->getFileLocatorMock('');
-
-        $nameResolver = $this->getTemplateFileResolverMock($name);
-        $loader = new TemplateLoader($locator, $nameResolver);
-
-        $this->assertFalse($loader->exists('not_existing_template.tpl'));
-    }
-
     public function testGetContext(): void
     {
         $name = 'testSmartyTemplate.tpl';

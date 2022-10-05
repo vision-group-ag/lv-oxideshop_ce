@@ -68,6 +68,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
   - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration/SmartyPluginDirectoriesDataMapper`
   - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration/SmartyPluginDirectory`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::exists()`
 - Property:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 
