@@ -56,7 +56,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('6ec4235c5182c3620.11050422',	1,	'',	'iNrofNewcomerArticles',	'str',	'4'),
 ('6f8453f77d174e0a0.31854175',	1,	'',	'blOtherCountryOrder',	'bool',	'1'),
 ('7044252b61dcb8ac9.31672388',	1,	'',	'bl_perfLoadPriceForAddList',	'bool',	'1'),
-('7044252b61dd44324.24181665',	1,	'',	'bl_perfParseLongDescinSmarty',	'bool',	'1'),
 ('77c425a29db68f0d9.00182375',	1,	'',	'bl_perfLoadManufacturerTree',	'bool',	'1'),
 ('79c3fbc9897c0d159.27469500',	1,	'',	'blLoadVariants',	'bool',	'1'),
 ('79e417a3916b910c8.31517473',	1,	'',	'bl_perfLoadAktion',	'bool',	'1'),

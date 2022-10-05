@@ -164,6 +164,12 @@ jobs:
         with:
           swap-size-gb: 10
 
+      - name: Install admin theme and template engine
+        run: docker-compose exec -T php composer require oxid-esales/smarty-admin-theme --with-all-dependencies
+
+      - name: Install flow theme
+        run: docker-compose exec -T php composer require oxid-esales/flow-theme --with-all-dependencies
+
       - name: Install dependencies
         run: docker-compose exec -T php composer require oxid-esales/tests-deprecated-ce --with-all-dependencies
 
