@@ -13,16 +13,10 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
-use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
 use OxidEsales\EshopCommunity\Application\Model\Shop;
 
 class ShopAdapter implements ShopAdapterInterface
 {
-    /**
-     * @var EshopShopIdCalculator
-     */
-    private $shopIdCalculator;
-
     /**
      * @param string $string
      *

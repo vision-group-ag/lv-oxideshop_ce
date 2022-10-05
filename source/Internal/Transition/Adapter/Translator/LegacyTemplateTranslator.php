@@ -19,6 +19,7 @@ class LegacyTemplateTranslator implements TranslatorInterface
     /**
      * @param string $string
      * @return string
+     * @throws TranslationNotFoundException
      */
     public function translate(string $string): string
     {
@@ -27,10 +28,7 @@ class LegacyTemplateTranslator implements TranslatorInterface
         $translation = $this->language->translateString($string, $tplLang, $isAdmin);
 
         if (!$this->language->isTranslated()) {
-            Registry::getLogger()->warning(
-                "translation for $string not found",
-                compact('tplLang', 'isAdmin')
-            );
+            throw new TranslationNotFoundException();
         }
 
         return $translation;
