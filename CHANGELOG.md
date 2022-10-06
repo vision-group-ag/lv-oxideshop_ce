@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Core\Field`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::exists()`
 
 ## [6.12.0] - 2022-08-15
 
