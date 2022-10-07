@@ -34,7 +34,7 @@ class TranslateSalutationLogic
      */
     public function translateSalutation(string $ident = ''): string
     {
-        $translation = '';
+        $translation = $ident;
         try {
             $translation = $this->translator->translate($ident);
         } catch (TranslationNotFoundException) {
