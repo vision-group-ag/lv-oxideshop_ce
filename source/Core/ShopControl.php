@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
@@ -870,7 +871,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         Registry::getLogger()->error($displayedException->getMessage(), [$rendererError]);
     }
 
-    private function passSessionErrorsToViewData(FrontendController $view, array $viewData): array
+    private function passSessionErrorsToViewData(BaseController $view, array $viewData): array
     {
         $errors = $this->getErrors($view->getClassKey());
         if (\is_array($errors) && count($errors)) {
