@@ -52,11 +52,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `oxid_esales.module.setup.shop_configuration_class_extension_handler`
   - `oxid_esales.module.setup.events_module_setting_handler`
   - `oxid_esales.module.setup.class_extension_chain_service`
+  - `oxid_esales.templating.template.loader`
+- Interfaces:
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
 - Methods:
   - `Core\Field`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
-  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::exists()`
 
 ## [6.12.0] - 2022-08-15
 
