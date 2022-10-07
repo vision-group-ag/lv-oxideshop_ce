@@ -12,17 +12,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Methods:
   - `Internal\Transition\Utility\BasicContextInterface::getTemplateCacheDirectory()`
 ### Removed
-- Service:
-  - `oxid_esales.command.apply_modules_configuration_command`
-  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
-  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
-  - `Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
-  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
-- Command:
-- `ApplyModulesConfigurationCommand` moved to another repository
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException`
-- `oxid_esales.command.apply_modules_configuration_command` service
-- `ApplyModulesConfigurationCommand` moved to another repository
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapper`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface`
@@ -33,7 +22,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDao`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationExtenderInterface`
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationExtender`
-- Method:
+- Service:
+  - `oxid_esales.command.apply_modules_configuration_command`
+  - `oxid_esales.templating.template.loader`
+  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
+  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
+  - `Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
+- Command:
+- `ApplyModulesConfigurationCommand` moved to another repository
+- Class:
+  - `Internal\Framework\Module\Setup\Exception\ModuleSetupException`
+  - `Core\Module\ModuleTemplateBlockRepository`
+  - `Core\Module\ModuleSmartyPluginDirectoryRepository`
+  - `Application\Model\SmartyRenderer`
+  - `Core\Smarty\Plugin\EmosAdapter`
+  - `Core\Smarty\Plugin\EmosItem`
+  - `Core\Smarty\Plugin\Emos`
+- Interfaces:
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
+- Methods:
   - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
   - `Core\Field`
     - `convertToFormattedDbDate()`
@@ -68,7 +76,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
   - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration/SmartyPluginDirectoriesDataMapper`
   - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration/SmartyPluginDirectory`
-  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface::exists()`
 - Property:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 

@@ -57,7 +57,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             $moduleConfiguration->setTitle($moduleData[MetaDataProvider::METADATA_TITLE]);
         }
 
-        return $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);;
+        return $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);
     }
 
     /**
