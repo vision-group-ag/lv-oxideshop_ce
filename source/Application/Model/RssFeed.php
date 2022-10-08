@@ -277,13 +277,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
     private function prepareLongDescription(\OxidEsales\Eshop\Application\Model\Article $article): string
     {
-        if ($article->getLongDescription() && $article->getLongDescription()->getRawValue()) {
+        if ($article->getLongDescription() && $article->getLongDescription()->value) {
             $activeView = oxNew(FrontendController::class);
             $activeView->addGlobalParams();
             $oxid = (string) $article->getId() . (string) $article->getLanguage();
             $activeLanguageId = Registry::getLang()->getTplLanguage();
             return $this->getRenderer()->renderFragment(
-                $article->getLongDescription()->getRawValue(),
+                $article->getLongDescription()->value,
                 "ox:{$oxid}{$activeLanguageId}",
                 $activeView->getViewData()
             );
