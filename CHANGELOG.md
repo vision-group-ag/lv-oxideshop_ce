@@ -11,76 +11,66 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   (when set to true, `Core\Field` will contain non-escaped HTML special characters)
 - Methods:
   - `Internal\Transition\Utility\BasicContextInterface::getTemplateCacheDirectory()`
+
 ### Removed
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapper`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapper`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ShopConfigurationCacheInterface`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ClassPropertyShopConfigurationCache`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDao`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationExtenderInterface`
-- `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationExtender`
-- Service:
+- Services:
   - `oxid_esales.command.apply_modules_configuration_command`
   - `oxid_esales.templating.template.loader`
-  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
-  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
-  - `Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
-  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
-- Command:
+- Commands:
 - `ApplyModulesConfigurationCommand` moved to another repository
-- Class:
-  - `Internal\Framework\Module\Setup\Exception\ModuleSetupException`
-  - `Core\Module\ModuleTemplateBlockRepository`
-  - `Core\Module\ModuleSmartyPluginDirectoryRepository`
+- Interfaces:
+  - `Internal\Framework\Module\Configuration\Cache\ShopConfigurationCacheInterface`
+  - `Internal\Framework\Module\Configuration\Dao\ShopConfigurationExtenderInterface`
+  - `Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface`
+  - `Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface`
+  - `Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface`
+  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
+- Classes:
   - `Application\Model\SmartyRenderer`
+  - `Core\Module\ModuleSmartyPluginDirectoryRepository`
+  - `Core\Module\ModuleTemplateBlockRepository`
   - `Core\Smarty\Plugin\EmosAdapter`
   - `Core\Smarty\Plugin\EmosItem`
   - `Core\Smarty\Plugin\Emos`
-- Interfaces:
-  - `Internal\Framework\Templating\Loader\TemplateLoaderInterface`
+  - `Internal\Framework\Module\Configuration\Cache\ClassPropertyShopConfigurationCache`
+  - `Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDao`
+  - `Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationExtender`
+  - `Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper`
+  - `Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapper`
+  - `Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapper`
+  - `Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory`
+  - `Internal\Framework\Module\Setup\Exception\ModuleSetupException`
+  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
+  - `Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
 - Methods:
   - `Application\Controller\Admin\AdminDetailsController::processEditValue()`
-  - `Core\Field`
+  - `Core\Email::_getSmarty()`
+  - `Core\Field::`
     - `convertToFormattedDbDate()`
     - `convertToPseudoHtml()`
-  - `OxidEsales\EshopCommunity\Core\Module\Module:getSmartyPluginDirectories()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateCompileId()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getSmartyPluginDirectories()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getShopSmartyPluginDirectories()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:_fillCommonSmartyProperties()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:_smartyCompileCheck()`
-  - `OxidEsales\EshopCommunity\Core\Email:_getSmarty()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getSmarty()`
-  - `OxidEsales\EshopCommunity\Core\UtilsView:getTemplateBlocks()`
-  - `OxidEsales\EshopCommunity\Core\SystemRequirements::getMissingTemplateBlocks`
-  - `oxfunctions:ox_get_template()`
-  - `oxfunctions:ox_get_timestamp()`
-  - `oxfunctions:ox_get_trusted()`
-  - `oxfunctions:ox_get_secure()`
+  - `Core\Module\Module::getSmartyPluginDirectories()`
+  - `Core\SystemRequirements::getMissingTemplateBlocks`
   - `Core\Utils::resetTemplateCache()`
   - `Core\UtilsView::getSmartyDir()`
-- Class:
-  - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
-  - `OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository`
-  - `OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryRepository`
-  - `OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos`
-  - `OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosAdapter`
-  - `OxidEsales\EshopCommunity\Core\Smarty\Plugin\EmosItem`
-  - `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Smarty\Module\TemplateExtension\TemplateBlockLoaderBridge`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration/SmartyPluginDirectoriesDataMapper`
-  - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration/SmartyPluginDirectory`
-- Property:
+  - `Core\UtilsView::_fillCommonSmartyProperties()`
+  - `Core\UtilsView::_smartyCompileCheck()`
+  - `Core\UtilsView::_smartyDefaultTemplateHandler()`
+  - `Core\UtilsView::getShopSmartyPluginDirectories()`
+  - `Core\UtilsView::getSmarty()`
+  - `Core\UtilsView::getSmartyPluginDirectories()`
+  - `Core\UtilsView::getTemplateBlocks()`
+  - `Core\UtilsView::getTemplateCompileId()`
+  - `Core\UtilsView::parseThroughSmarty()`
+  - `oxfunctions::ox_get_secure()`
+  - `oxfunctions::ox_get_template()`
+  - `oxfunctions::ox_get_timestamp()`
+  - `oxfunctions::ox_get_trusted()`
+- Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
 
 ### Fixed
-- Partly revert `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
+- Partly revert `Core\Autoload\ModuleAutoload`
 
 ### Changed
 - Shop configuration files structure

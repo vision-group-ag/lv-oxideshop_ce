@@ -13,8 +13,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\InvalidModuleIdException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleSettingNotFountException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+
 use function Symfony\Component\String\u;
 
 class ModuleConfiguration
