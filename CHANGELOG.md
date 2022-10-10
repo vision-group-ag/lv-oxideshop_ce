@@ -52,22 +52,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - `Core\Module\Module::getSmartyPluginDirectories()`
   - `Core\SystemRequirements::getMissingTemplateBlocks`
   - `Core\Utils::resetTemplateCache()`
-  - `Core\UtilsView::getSmartyDir()`
   - `Core\UtilsView::_fillCommonSmartyProperties()`
   - `Core\UtilsView::_smartyCompileCheck()`
   - `Core\UtilsView::_smartyDefaultTemplateHandler()`
+  - `Core\UtilsView::addActiveThemeId()`
   - `Core\UtilsView::getShopSmartyPluginDirectories()`
   - `Core\UtilsView::getSmarty()`
+  - `Core\UtilsView::getSmartyDir()`
   - `Core\UtilsView::getSmartyPluginDirectories()`
   - `Core\UtilsView::getTemplateBlocks()`
   - `Core\UtilsView::getTemplateCompileId()`
+  - `Core\UtilsView::getTemplateDirs()`
   - `Core\UtilsView::parseThroughSmarty()`
+  - `Core\UtilsView::setTemplateDir()`
   - `oxfunctions::ox_get_secure()`
   - `oxfunctions::ox_get_template()`
   - `oxfunctions::ox_get_timestamp()`
   - `oxfunctions::ox_get_trusted()`
 - Properties:
   - `Application\Controller\Admin\AdminDetailsController::$_oEditor`
+  - `Core\UtilsView::$_aTemplateDir`
 
 ### Fixed
 - Partly revert `Core\Autoload\ModuleAutoload`

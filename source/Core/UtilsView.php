@@ -12,18 +12,9 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use Webmozart\PathUtil\Path;
 
 class UtilsView extends \OxidEsales\Eshop\Core\Base
 {
-    /**
-     * Templates directories array
-     *
-     * @var array
-     */
-    protected $_aTemplateDir = [];
-
     /**
      * Templating instance getter
      *
@@ -153,61 +144,5 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
                 Registry::getSession()->setVariable('ErrorController', $aControllerErrors);
             }
         }
-    }
-
-    /**
-     * Templates directory setter
-     *
-     * @param string $templatesDirectory templates path
-     */
-    public function setTemplateDir($templatesDirectory)
-    {
-        if ($templatesDirectory && !in_array($templatesDirectory, $this->_aTemplateDir)) {
-            $this->_aTemplateDir[] = $templatesDirectory;
-        }
-    }
-
-    /**
-     * Initializes and returns templates directory info array
-     *
-     * @return array
-     */
-    public function getTemplateDirs()
-    {
-        $config = Registry::getConfig();
-
-        // buffer for CE (main) edition templates
-        $mainTemplatesDirectory = $config->getTemplateDir($this->isAdmin());
-
-        // main templates directory has not much priority anymore
-        $this->setTemplateDir($mainTemplatesDirectory);
-
-        // out directory can have templates too
-        if (!$this->isAdmin()) {
-            $this->setTemplateDir($this->addActiveThemeId($config->getOutDir(true)));
-        }
-
-        return $this->_aTemplateDir;
-    }
-
-    /**
-     * Add active theme at the end of theme path to form full path to templates.
-     *
-     * @param string $themePath
-     *
-     * @return string
-     */
-    protected function addActiveThemeId(string $themePath): string
-    {
-        $themeId = $this->isAdmin()
-            ? $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme()
-            : Registry::getConfig()->getConfigParam('sTheme');
-
-        return Path::join(
-            $themePath,
-            $themeId,
-            'tpl'
-        )
-            . DIRECTORY_SEPARATOR;
     }
 }
