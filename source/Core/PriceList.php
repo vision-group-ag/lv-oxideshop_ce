@@ -41,7 +41,7 @@ class PriceList
             $dSum += $oPrice->getBruttoPrice();
         }
 
-        return $dSum;
+        return \OxidEsales\Eshop\Core\Registry::getUtils()->fRound($dSum);
     }
 
     /**
@@ -56,7 +56,7 @@ class PriceList
             $dSum += $oPrice->getNettoPrice();
         }
 
-        return $dSum;
+        return \OxidEsales\Eshop\Core\Registry::getUtils()->fRound($dSum);
     }
 
     /**
