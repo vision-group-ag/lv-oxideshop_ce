@@ -53,6 +53,11 @@
             "if [ -f ./vendor/bin/oe-eshop-ide_helper ]; then oe-eshop-ide_helper; fi"
         ]
     },
+    "config": {
+        "allow-plugins": {
+            "oxid-esales/oxideshop-unified-namespace-generator": true
+        }
+    },
     "extra": {
         "oxideshop": {
             "blacklist-filter": [
