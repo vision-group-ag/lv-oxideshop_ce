@@ -19,11 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone testing environment master
-        run: git clone --depth 1 https://github.com/OXID-eSales/docker-eshop-sdk.git --branch master --single-branch .
+        run: git clone --depth 1 https://github.com/vision-group-ag/docker-eshop-sdk.git --branch master --single-branch .
 
       - name: Clone the shop (${{ github.ref_name }})
         if: github.event_name == 'push'
-        run: git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git --branch ${{ github.ref_name }} --single-branch source
+        run: git clone --depth 1 https://github.com/vision-group-ag/oxideshop_ce.git --branch ${{ github.ref_name }} --single-branch source
 
       - name: Cache current installation
         uses: actions/cache@v2
