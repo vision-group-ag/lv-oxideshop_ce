@@ -18,6 +18,13 @@ jobs:
         if: github.event_name == 'push'
         run: git clone --depth 1 https://github.com/vision-group-ag/oxideshop_ce.git --branch ${{ github.ref_name }} --single-branch source
 
+      - name: Cache current installation
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./*
+          key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
       - name: Prepare container configuration
         run: |
           make setup
@@ -35,6 +42,7 @@ jobs:
           perl -pi\
               -e 's#/var/www/#/var/www/source/#g;'\
               containers/httpd/project.conf
+
       - name: Prepare shop configuration
         run: |
           cp source/source/config.inc.php.dist source/source/config.inc.php
@@ -51,10 +59,12 @@ jobs:
             -e 's#<sShopDir>#/var/www/source/#g;'\
             -e 's#<sCompileDir>#/var/www/source/tmp/#g;'\
             source/source/config.inc.php
+
       - name: Start containers
         run: |
           make up
           sleep 2
+
       - name: Install dependencies
         run: docker-compose exec -T php composer update --no-interaction
 
@@ -65,6 +75,7 @@ jobs:
         run: |
           docker-compose down
           sleep 2
+
   unit_tests:
     strategy:
       matrix:
@@ -82,16 +93,18 @@ jobs:
           key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
           restore-keys: |
             shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
       - name: Start containers
         run: |
           make up
           sleep 2
+
       - name: Run tests
         run: |
           docker-compose run -T \
-            -e TEST_DIRS=unit,Unit \
-            php php vendor/bin/runtests | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+            php php vendor/bin/phpunit -c phpunit.xml tests/Unit | tee unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
       - name: Ensure that tests have been run
         run: if [ ! -s unit_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt ]; then echo "PHPUnit log file is empty! Seems like no tests have been run!" && exit 1; fi
 
@@ -121,16 +134,21 @@ jobs:
           key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
           restore-keys: |
             shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
       - name: Start containers
         run: |
           make up
           sleep 2
+
+      - name: Reset shop
+        run: docker-compose exec -T php php bin/oe-console oe:database:reset --db-host=mysql --db-port=3306 --db-name=example --db-user=root --db-password=root --force
+
       - name: Run tests
         run: |
           docker-compose run -T \
-            -e TEST_DIRS=integration,Integration \
-            php php vendor/bin/runtests | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+            php php vendor/bin/phpunit -c phpunit.xml --bootstrap tests/bootstrap.php tests/Integration | tee integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error' integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
       - name: Ensure that tests have been run
         run: if [ ! -s integration_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt ]; then echo "PHPUnit log file is empty! Seems like no tests have been run!" && exit 1; fi
 
@@ -160,17 +178,26 @@ jobs:
           key: shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
           restore-keys: |
             shopInstallation-${{ matrix.php }}-${{ matrix.mysql }}-${{ github.sha }}
+
       - name: Start containers
         run: |
           make up
           sleep 2
+
+      - name: Install admin theme and template engine
+        run: docker-compose exec -T php composer require oxid-esales/twig-admin-theme --with-all-dependencies
+
+      - name: Install twig theme
+        run: docker-compose exec -T php composer require oxid-esales/twig-theme --with-all-dependencies
+
       - name: Run tests
         run: |
           docker-compose exec -T \
             -e SELENIUM_SERVER_HOST=seleniumfirefox \
             -e BROWSER_NAME=firefox \
-            php php vendor/bin/runtests-codeception --ext DotReporter | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
+            php php vendor/bin/codecept run acceptance,acceptanceAdmin -c tests/codeception.yml --ext DotReporter | tee codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt 2>&1 || true
           if grep -q -Ei 'fail|\\.\\=\\=|Warning|Notice|Deprecated|Fatal|Error|DID NOT FINISH' codeception_PHP${{ matrix.php }}_MYSQL${{ matrix.mysql }}_phpunit_log.txt; then exit 1; fi
+
       - name: Upload PHPUnit Log
         if: always()
         uses: actions/upload-artifact@v3
